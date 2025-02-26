@@ -48,7 +48,7 @@
     <main class="lg:ml-64 p-8">
         <!-- Header -->
         <header method="post" class="bg-white shadow rounded-lg p-4 mb-6">
-            <form class="max-w-md mx-auto" action="{{ route('annonce.index') }}" >  
+            <form class="max-w-md mx-auto" action="{{ route('chauffeur.index') }}" >  
                 @csrf 
                 <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                 <div class="relative">
@@ -62,43 +62,35 @@
                 </div>
             </form>
 
-
-            <div>
-                @php
-                    echo $_SESSION['user_id'];    
-                @endphp
-                @foreach ($annonce as $annon)
-                <div class="grid grid-cols-2 max-w-sm bg-white border border-gray-200  rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+            @foreach ($disponibilite as $dispo)
+            <div class="grid grid-cols-2 max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+                <a href="#">
+                    {{-- <img class="rounded-t-lg" src="{{ $dispo->photos }}" alt="" /> --}}
+                </a>
+                <div class="p-5">
                     <a href="#">
-                        <img class="rounded-t-lg" src="{{  ($annon->photos) }}" alt="" />
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $dispo->titre }}</h5>
                     </a>
-                    <div class="p-5">
-                        <a href="#">
-
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $annon->titre }}</h5>
-                        </a>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $annon->description }}</p>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $annon->date }}</p>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $annon->lieu }}</p>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $annon->email }}</p>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $annon->phone }}</p>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $annon->nom }}</p>
-
-                        <a href="{{ route('annonce.edit', $annon->id) }}" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Modifier</a>
-            
-                        <form action="{{ route('annonce.destroy', $annon->id) }}" method="post">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Supprimer</button>
-                        </form>
-                    </div>
-
-                    <a href="{{ route('annonce.show', $annon) }}" class="px-2 py-1 bg-gray-500 text-sm font-bold rounded-lg hover:bg-gray-600 transition duration-300"> Voire details</a>
-
-                 
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $dispo->dateDebut }}</p>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $dispo->dateFin }}</p>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $dispo->destination }}</p>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $dispo->statut }}</p>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $dispo->id_chauffeur }}</p>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $dispo->nom }}</p>
+        
+                    <a href="{{ route('chauffeur.edit', $dispo->id) }}" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Modifier</a>
+                    
+                    <form action="{{ route('chauffeur.destroy', $dispo->id) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Supprimer</button>
+                    </form>
                 </div>
-                @endforeach
+        
+                <a href="{{ route('chauffeur.show', $dispo) }}" class="px-2 py-1 bg-gray-500 text-sm font-bold rounded-lg hover:bg-gray-600 transition duration-300">Voir details</a>
             </div>
+        @endforeach
+        
         </header>
 
 

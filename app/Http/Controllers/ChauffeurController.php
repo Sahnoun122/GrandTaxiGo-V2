@@ -8,6 +8,6 @@ class ChauffeurController extends Controller
 {
     public function dashboard()
     {
-        return view('chauffeur.dashboard'); 
+        return view('chauffeur.index'); 
     }
 }

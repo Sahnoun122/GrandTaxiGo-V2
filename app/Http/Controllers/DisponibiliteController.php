@@ -12,37 +12,39 @@ class DisponibiliteController extends Controller
      */
     public function index()
     {
-        return view('chauffeur.dashboard');
+        $disponibilite = Disponibilite::all();  
+    
+        return view('chauffeur.index', ['disponibilite' => $disponibilite]);
     }
-
+    
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $disponibilite =Disponibilite::all();
-        return view('chauffeur.create' , ['disponibilite'=> $disponibilite]);
+        return view('chauffeur.show');
     }
-
     /**
      * Store a newly created resource in storage.
      */
-
-
-    
     public function store(Request $request)
     {
-        $validateData = $request->validate([
-            'dateDebut'=>'required',
-            'dateFin'=>'required',
-            'destination ' =>'required',
-            'statut' =>'required',
-            'id_chauffeur' =>'required',
+        $request->validate([
+            'dateDebut' => 'required',
+            'dateFin' => 'required',
+            'destination' => 'required',
+            'statut' => 'required',
+            'id_chauffeur'
         ]);
+    
+        $disponibiliteData = $request->all();
+        $disponibiliteData['id_chauffeur'] = auth()->user()->id; 
 
-        $disponibilite= Disponibilite::create($validateData);
-        return redirect('/chauffeur')->with('success' , 'Ajouté avec succès');
+        Disponibilite::create($disponibiliteData);
+    
+        return redirect()->route('chauffeur.index')->with('success', 'Disponibilite ajoutée avec succès');
     }
+    
 
     /**
      * Display the specified resource.
@@ -71,7 +73,6 @@ class DisponibiliteController extends Controller
             'dateFin'=>'required',
             'destination ' =>'required',
             'statut' =>'required',
-            'id_chauffeur' =>'required',
 
         ]);
         Disponibilite::whereId($id)->update($validateData);

@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('index') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
                 </div>
@@ -13,11 +13,11 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @if(Auth::user()->role === 'passager')
-                        <x-nav-link :href="route('passager.dashboard')" :active="request()->routeIs('passager.dashboard')">
+                        <x-nav-link :href="route('passager.index')" :active="request()->routeIs('passager.dashboard')">
                             {{ __('Passager Dashboard') }}
                         </x-nav-link>
                     @elseif(Auth::user()->role === 'chauffeur')
-                        <x-nav-link :href="route('chauffeur.dashboard')" :active="request()->routeIs('chauffeur.dashboard')">
+                        <x-nav-link :href="route('chauffeur.index')" :active="request()->routeIs('chauffeur.dashboard')">
                             {{ __('Chauffeur Dashboard') }}
                         </x-nav-link>
                     @endif

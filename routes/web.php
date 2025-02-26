@@ -7,7 +7,7 @@ use App\Http\Controllers\DisponibiliteController;
 use App\Http\Controllers\PassagerController;
 
 
-$_SESSION['user_id'] = 1;
+$_SESSION['user_id'] = 2;
 
 
 Route::get('/chauffeur/index', [ChauffeurController::class, 'dashboard'])->name('chauffeur.index');

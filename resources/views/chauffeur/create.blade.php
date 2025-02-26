@@ -1,6 +1,9 @@
-@extends('layouts.app')
+{{-- @extends('Annonce')
+@section('main') --}}
+@php
+echo $_SESSION['user_id'];    
+@endphp
 
-@section('main')
 <form method="POST" action="{{ route('chauffeur.store') }}">
     @csrf
 
@@ -33,4 +36,3 @@
         Submit
     </button>
 </form>
-@endsection

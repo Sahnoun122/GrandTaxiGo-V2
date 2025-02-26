@@ -33,7 +33,7 @@
             <h2 class="text-2xl font-bold mb-6">lost and found</h2>
             <nav>
                 <a href="#" class="block py-2 px-4 bg-gray-700 rounded mb-2">Tableau de bord</a>
-                <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Utilisateurs</a>
+                <a href=" {{ route('chauffeur.create') }} " class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">create</a>
                 <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Annonces</a>
                 <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Transactions</a>
                 <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Évaluations</a>
@@ -61,7 +61,9 @@
                     <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Recherchers</button>
                 </div>
             </form>
-
+            @php
+            echo $_SESSION['user_id'];    
+        @endphp
             @foreach ($disponibilite as $dispo)
             <div class="grid grid-cols-2 max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                 <a href="#">

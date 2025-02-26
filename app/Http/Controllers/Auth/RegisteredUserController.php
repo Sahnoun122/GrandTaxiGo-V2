@@ -52,11 +52,10 @@ class RegisteredUserController extends Controller
     
         Auth::login($user);
     
-        // Redirection en fonction du rôle
         if ($user->role === 'chauffeur') {
-            return redirect()->route('chauffeur.dashboard'); 
+            return redirect()->route('chauffeur.index'); 
         } else {
-            return redirect()->route('passager.dashboard'); 
+            return redirect()->route('passager.index'); 
         }
     }
 }

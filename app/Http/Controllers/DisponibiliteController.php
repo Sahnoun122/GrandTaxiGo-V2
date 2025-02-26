@@ -22,24 +22,28 @@ class DisponibiliteController extends Controller
      */
     public function create()
     {
-        return view('chauffeur.show');
+        return view('chauffeur.create');
     }
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'You must be logged in to add availability.');
+        }
+    
         $request->validate([
             'dateDebut' => 'required',
             'dateFin' => 'required',
             'destination' => 'required',
             'statut' => 'required',
-            'id_chauffeur'
+            'id_chauffeur'  
         ]);
     
         $disponibiliteData = $request->all();
         $disponibiliteData['id_chauffeur'] = auth()->user()->id; 
-
+    
         Disponibilite::create($disponibiliteData);
     
         return redirect()->route('chauffeur.index')->with('success', 'Disponibilite ajoutée avec succès');
@@ -59,26 +63,34 @@ class DisponibiliteController extends Controller
      */
     public function edit(string $id)
     {
-        $disponibilite= Disponibilite::findOrFail($id);
-        return view ('chauffeur.edit' , compact('disponibilite'));
+        $disponibilite = Disponibilite::findOrFail($id);
+        return view('chauffeur.edit', compact('disponibilite'));
     }
-
+    
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        $validateData= $request->validate([
-            'dateDebut'=>'required',
-            'dateFin'=>'required',
-            'destination ' =>'required',
-            'statut' =>'required',
-
+        $validateData = $request->validate([
+            'dateDebut' => 'required|date',
+            'dateFin' => 'required|date',
+            'destination' => 'required|string|max:255',
+            'statut' => 'required|in:active,desactive',
         ]);
-        Disponibilite::whereId($id)->update($validateData);
-        return redirect()->route('chauffeur.index')->with('success' , 'disponibilite mise à jour avec succès');
+    
+      
+        $disponibilite = Disponibilite::findOrFail($id);
+        
+        if ($disponibilite->id_chauffeur !== auth()->id()) {
+            return redirect()->route('chauffeur.index')->with('error', 'Unauthorized action');
+        }
+    
+        $disponibilite->update($validateData);
+    
+        return redirect()->route('chauffeur.index')->with('success', 'Disponibilite mise à jour avec succès');
     }
-
+    
     /**
      * Remove the specified resource from storage.
      */

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Disponibilite;
 use Illuminate\Http\Request;
 
 class DisponibiliteController extends Controller
@@ -11,7 +12,7 @@ class DisponibiliteController extends Controller
      */
     public function index()
     {
-        //
+        return view('chauffeur.dashboard');
     }
 
     /**
@@ -25,9 +26,21 @@ class DisponibiliteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+
+    
     public function store(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'dateDebut'=>'required',
+            'dateFin'=>'required',
+            'destination ' =>'required',
+            'statut' =>'required',
+            'id_chauffeur' =>'required',
+        ]);
+
+        $disponibilite= Disponibilite::create($validateData);
+        return redirect('/chauffeur')->with('success' , 'Ajouté avec succès');
     }
 
     /**

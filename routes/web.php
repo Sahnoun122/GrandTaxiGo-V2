@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChauffeurController;
+use App\Http\Controllers\DisponibiliteController;
 use App\Http\Controllers\PassagerController;
 
 
@@ -13,6 +14,12 @@ Route::get('/chauffeur/dashboard', [ChauffeurController::class, 'dashboard'])->n
 
 Route::get('/passager/dashboard', [PassagerController::class, 'dashboard'])->name('passager.dashboard');
 
+
+
+Route::post('chauffeur.index', [DisponibiliteController::class, 'index']);
+
+
+Route::resource('chauffeur', DisponibiliteController::class);
 
 
 // Route::get('/passager/dashboard', [PassagerController::class, 'dashboard'])

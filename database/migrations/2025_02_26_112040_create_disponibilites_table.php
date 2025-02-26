@@ -12,16 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('disponibilites', function (Blueprint $table) {
-            $table->id();
+            $table->id(); 
             $table->date('dateDebut');
-            $table->date('dateFin');
-            $table->date('destination');
-            $table->enum('statut' , ['active' , 'desactive'])->default('active');
+            $table->date('dateFin'); 
+            $table->string('destination', 255); 
+            $table->enum('statut', ['active', 'desactive'])->default('active'); 
             $table->unsignedBigInteger('id_chauffeur');
-            $table->foreign('id_chauffeur')->references('id')->on('users')->onUpdate('cascade');
-            $table->timestamps();
+            $table->foreign('id_chauffeur') 
+                ->references('id') 
+                ->on('users') 
+                ->onDelete('cascade') 
+                ->onUpdate('cascade'); 
+            $table->timestamps(); 
         });
     }
+    
 
     /**
      * Reverse the migrations.

@@ -6,6 +6,7 @@ use App\Http\Controllers\ChauffeurController;
 use App\Http\Controllers\PassagerController;
 
 
+$_SESSION['user_id'] = 1;
 
 
 Route::get('chauffeur/dashboard', [ChauffeurController::class, 'dashboard'])->name('chauffeur.dashboard');

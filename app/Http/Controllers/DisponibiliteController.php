@@ -20,7 +20,8 @@ class DisponibiliteController extends Controller
      */
     public function create()
     {
-        //
+        $disponibilite =Disponibilite::all();
+        return view('chauffeur.create' , ['disponibilite'=> $disponibilite]);
     }
 
     /**
@@ -48,7 +49,7 @@ class DisponibiliteController extends Controller
      */
     public function show(string $id)
     {
-        //
+          
     }
 
     /**
@@ -56,7 +57,8 @@ class DisponibiliteController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $disponibilite= Disponibilite::findOrFail($id);
+        return view ('chauffeur.edit' , compact('disponibilite'));
     }
 
     /**
@@ -64,7 +66,16 @@ class DisponibiliteController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validateData= $request->validate([
+            'dateDebut'=>'required',
+            'dateFin'=>'required',
+            'destination ' =>'required',
+            'statut' =>'required',
+            'id_chauffeur' =>'required',
+
+        ]);
+        Disponibilite::whereId($id)->update($validateData);
+        return redirect()->route('chauffeur.index')->with('success' , 'disponibilite mise à jour avec succès');
     }
 
     /**
@@ -72,6 +83,8 @@ class DisponibiliteController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $disponibilite = Disponibilite::findOrFail($id);
+        $disponibilite->delete();
+        return redirect()->route('chauffeur.index')->with('success' , 'disponibilite supprimer avec succès');
     }
 }

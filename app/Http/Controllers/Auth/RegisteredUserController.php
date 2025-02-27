@@ -31,21 +31,28 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'nom' => ['required', 'string', 'max:255'],
-            'prenom' => ['required', 'string', 'max:255'], 
-            'photos' => ['nullable', 'string', 'max:255'], 
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'string', 'in:passager,chauffeur'], 
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|string',
+            'photos' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ]);
     
+        if ($request->hasFile('photos')) {
+            $path = $request->file('photos')->store('photos', 'public'); 
+        } else {
+            $path = null; 
+        }
+    
+        // Créer l'utilisateur
         $user = User::create([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
-            'photos' => $request->photos,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role, 
+            'password' => bcrypt($request->password),
+            'role' => $request->role,
+            'photo' => $path, 
         ]);
     
         event(new Registered($user));

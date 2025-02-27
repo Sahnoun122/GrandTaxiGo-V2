@@ -1,8 +1,12 @@
 {{-- @extends('Annonce')
 @section('main') --}}
+
+
 {{-- @php
 echo $_SESSION['user_id'];    
 @endphp --}}
+
+
 
 {{-- @extends('layouts.app') --}}
 

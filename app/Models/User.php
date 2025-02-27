@@ -26,6 +26,10 @@ class User extends Authenticatable
         'role',
     ];
 
+    public function disponibilites()
+    {
+        return $this->hasMany(Disponibilite::class, 'id_chauffeur');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

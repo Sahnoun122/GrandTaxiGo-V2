@@ -8,10 +8,14 @@ use App\Models\Disponibilite;
 
 class PassagerController extends Controller
 {
+
     public function index()
     {
-        $disponibilit = Disponibilite::all();  
+        $disponibilites = Disponibilite::with('chauffeur') 
+                                        ->where('statut', 'active') 
+                                        ->get();
     
-        return view('chauffeur.index', ['disponibilite' => $disponibilit]);
+        return view('passager.index', compact('disponibilites')); 
     }
+    
 }

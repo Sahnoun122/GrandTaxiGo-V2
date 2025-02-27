@@ -19,7 +19,6 @@
 </head>
 
 <body class="bg-gray-100">
-    <!-- Menu Burger pour mobile -->
     <button id="menuButton" class="lg:hidden fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path id="menuIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -27,7 +26,6 @@
         </svg>
     </button>
 
-    <!-- Sidebar avec classe pour mobile -->
     <aside id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-gray-800 text-white transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40">
         <div class="p-4">
             <h2 class="text-2xl font-bold mb-6">lost and found</h2>
@@ -41,12 +39,9 @@
         </div>
     </aside>
 
-    <!-- Overlay pour mobile -->
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-30 hidden lg:hidden"></div>
 
-    <!-- Main Content avec ajustement responsive -->
     <main class="lg:ml-64 p-8">
-        <!-- Header -->
         <header method="post" class="bg-white shadow rounded-lg p-4 mb-6">
             <form class="max-w-md mx-auto" action="{{ route('passager.index') }}" >  
                 @csrf 
@@ -61,30 +56,82 @@
                     <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Recherchers</button>
                 </div>
             </form>
-            @php
+            {{-- @php
             echo $_SESSION['user_id'];    
-        @endphp
-          @foreach ($disponibilite as $dispo)
-          <div class="grid grid-cols-2 max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-              <a href="#">
-                  {{-- <img class="rounded-t-lg" src="{{ $dispo->photos }}" alt="" /> --}}
-              </a>
-              <div class="p-5">
-                  <a href="#">
-                      <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $dispo->titre }}</h5>
-                  </a>
-                  <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $dispo->dateDebut }}</p>
-                  <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $dispo->dateFin }}</p>
-                  <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $dispo->destination }}</p>
-                  <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $dispo->statut }}</p>
-                  <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $dispo->id_chauffeur }}</p>
-                  <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $dispo->nom }}</p>
-              </div>
-          
-              {{-- On enlève les boutons "Modifier" et "Supprimer" pour le passager --}}
-              <a href="{{ route('chauffeur.show', $dispo) }}" class="px-2 py-1 bg-gray-500 text-sm font-bold rounded-lg hover:bg-gray-600 transition duration-300">Voir détails</a>
-          </div>
-      @endforeach
+        @endphp --}}
+                    @foreach($disponibilites as $disponibilite)
+                    <div class="reservation bg-white shadow-lg rounded-lg p-6 my-4 max-w-xl mx-auto">
+                        <h3 class="text-xl font-semibold text-gray-800">{{ $disponibilite->chauffeur->nom }} {{ $disponibilite->chauffeur->prenom }}</h3>
+                        <img src="{{ asset('storage/app/public/photos' . $disponibilite->chauffeur->photos) }}" alt="Photo du chauffeur" class="rounded-full w-24 h-24 object-cover my-4">
+                        
+                        <p class="text-gray-700"><strong>Destination:</strong> {{ $disponibilite->destination }}</p>
+                        <p class="text-gray-700"><strong>Date de début:</strong> {{ $disponibilite->dateDebut }}</p>
+                        <p class="text-gray-700"><strong>Date de fin:</strong> {{ $disponibilite->dateFin }}</p>
+                        <p class="text-gray-700"><strong>Statut:</strong> {{ $disponibilite->statut }}</p>
+                    
+                        <button id="openModalBtn" class="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            Réserver
+                        </button>
+                    </div>
+                    
+                    <div id="reservationModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 hidden">
+                        <div class="bg-white rounded-lg shadow-xl p-6 w-96">
+                            <h2 class="text-2xl font-semibold text-center text-gray-800 mb-4">Informations de Réservation</h2>
+                    
+                            <form action="" method="POST" class="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg">
+                                @csrf
+                                <h2 class="text-2xl font-semibold text-center mb-6">Réserver un Trajet</h2>
+                            
+                                <div class="mb-4">
+                                    <label for="date" class="block text-sm font-medium text-gray-700">Date du Trajet</label>
+                                    <input type="date" id="date" name="date" required class="mt-2 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                    @error('date')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            
+                                <div class="mb-4">
+                                    <label for="lieu" class="block text-sm font-medium text-gray-700">Lieu de départ</label>
+                                    <input type="text" id="lieu" name="lieu" required class="mt-2 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Entrez le lieu de départ">
+                                    @error('lieu')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            
+                                <div class="mb-4">
+                                    <label for="destination" class="block text-sm font-medium text-gray-700">Destination</label>
+                                    <input type="text" id="destination" name="destination" required class="mt-2 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Entrez la destination">
+                                    @error('destination')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            
+                                <div class="mb-4">
+                                    <label for="id_dispo" class="block text-sm font-medium text-gray-700">Choisir un Chauffeur</label>
+                                    {{-- <select name="id_dispo" id="id_dispo" required class="mt-2 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                        @foreach($disponibilites as $disponibilite)
+                                            <option value="{{ $disponibilite->id }}">
+                                                {{ $disponibilite->chauffeur->nom }} - {{ $disponibilite->dateDebut }} à {{ $disponibilite->dateFin }}
+                                            </option>
+                                        @endforeach
+                                    </select> --}}
+                                    @error('id_dispo')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            
+                                <div class="mt-6 text-center">
+                                    <button type="submit" class="w-full py-3 px-4 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                        Réserver
+                                    </button>
+                                </div>
+                            </form>
+                            
+                            
+                        </div>
+                    </div>
+                    @endforeach
+
       
         </header>
         <div class="container">
@@ -136,17 +183,17 @@
 
     <script>
 
-const modal = document.querySelector("#crud-modal");
-let isclick = true;
-let btn = function() {
-    if (isclick == 1) {
-        modal.style.display = "block";
-        isclick = 0;
-    } else {
-        modal.style.display = "none";
-        isclick = 1;
-    }
-}
+
+
+document.getElementById('openModalBtn').addEventListener('click', function() {
+                            document.getElementById('reservationModal').classList.remove('hidden');
+                        });
+                    
+                        document.getElementById('closeModalBtn').addEventListener('click', function() {
+                            document.getElementById('reservationModal').classList.add('hidden');
+                        });
+
+
 
 
         // Logique du menu burger

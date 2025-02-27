@@ -17,4 +17,9 @@ class Disponibilite extends Model
         'id_chauffeur',
         
     ];
+
+    public function chauffeur()
+    {
+        return $this->belongsTo(User::class, 'id_chauffeur');
+    }
 }

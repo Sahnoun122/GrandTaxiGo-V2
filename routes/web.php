@@ -27,13 +27,13 @@ Route::get('chauffeur', [DisponibiliteController::class, 'index'])->name('chauff
 
 
 
-// Route::get('/passager/dashboard', [PassagerController::class, 'dashboard'])
+// Route::get('/passager/dashboard', [PassagerController::class, 'index'])
 //     ->middleware(['auth', 'role:passager'])
-//     ->name('passager.dashboard');
+//     ->name('passager.index');
 
-// Route::get('/chauffeur/dashboard', [ChauffeurController::class, 'dashboard'])
+// Route::get('/chauffeur/dashboard', [ChauffeurController::class, 'index'])
 //     ->middleware(['auth', 'role:chauffeur'])
-//     ->name('chauffeur.dashboard');
+//     ->name('chauffeur.index');
 // Route::get('/', function () {
 //     return view('welcome');
 // });

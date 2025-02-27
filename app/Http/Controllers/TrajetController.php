@@ -2,63 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Trajet;
+use App\Models\Disponibilite;
 use Illuminate\Http\Request;
 
 class TrajetController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $trajets = Trajet::with('disponibilite.chauffeur')->where('id_passager', auth()->id())->get();
+        return view('passager.trajets', compact('trajets'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
-    }
+        // Validation des données
+        $request->validate([
+            'date' => 'required|date',
+            'lieu' => 'required|string|max:255',
+            'destination' => 'required|string|max:255',
+            'id_dispo' => 'required|exists:disponibilites,id',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        Trajet::create([
+            'date' => $request->date,
+            'lieu' => $request->lieu,
+            'destination' => $request->destination,
+            'id_passager' => auth()->id(),
+            'id_dispo' => $request->id_dispo,
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('passager.index')->with('success', 'Trajet réservé avec succès');
     }
 }

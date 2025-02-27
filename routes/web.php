@@ -5,12 +5,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChauffeurController;
 use App\Http\Controllers\DisponibiliteController;
 use App\Http\Controllers\PassagerController;
+use App\Http\Controllers\TrajetController;
+
 
 
 // $_SESSION['user_id'] = 2;
 
 
-Route::get('/chauffeur/index', [ChauffeurController::class, 'dashboard'])->name('chauffeur.index');
+Route::get('/chauffeur/index', [ChauffeurController::class, 'index'])->name('chauffeur.index');
 
 Route::get('/passager/index', [PassagerController::class, 'index'])->name('passager.index');
 
@@ -24,6 +26,11 @@ Route::get('passager', [DisponibiliteController::class, 'index'])->name('passage
 Route::resource('chauffeur', DisponibiliteController::class); 
 
 Route::get('chauffeur', [DisponibiliteController::class, 'index'])->name('chauffeur.index');
+
+
+
+Route::get('passager/index', [TrajetController::class, 'index']); 
+Route::post('passager/store', [TrajetController::class, 'store']);
 
 
 

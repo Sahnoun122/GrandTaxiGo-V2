@@ -14,8 +14,6 @@ use App\Http\Controllers\TrajetController;
 
 Route::get('/chauffeur/index', [ChauffeurController::class, 'index'])->name('chauffeur.index');
 
-Route::get('/passager/index', [PassagerController::class, 'index'])->name('passager.index');
-
 
 // Route::POST('chauffeur.index' , [DisponibiliteController::class , 'index']);
 // Route::POST('chauffeur.show' , [DisponibiliteController::class , 'index']);
@@ -29,9 +27,25 @@ Route::get('chauffeur', [DisponibiliteController::class, 'index'])->name('chauff
 
 
 
-Route::get('passager/index', [TrajetController::class, 'index']); 
-Route::post('passager/store', [TrajetController::class, 'store']);
+Route::get('/passager/trajets', [TrajetController::class, 'trajets'])->name('passager.trajets');
 
+
+// // Route GET pour afficher la liste des trajets
+// Route::get('/passager/index', [PassagerController::class, 'index'])->name('passager.index');
+
+// // Route POST pour soumettre un formulaire de réservation
+// Route::post('/passager', [TrajetController::class, 'store'])->name('passager.store');
+
+
+
+Route::get('/passager/dashboard', [PassagerController::class, 'dashboard'])->name('passager.dashboard');
+
+Route::post('/passager/dashboard', [TrajetController::class, 'store'])->name('passager.store');
+
+
+
+
+Route::post('/trajet/{id}/annule', [TrajetController::class, 'annule'])->name('trajet.annule');
 
 
 // Route::get('/passager/dashboard', [PassagerController::class, 'index'])

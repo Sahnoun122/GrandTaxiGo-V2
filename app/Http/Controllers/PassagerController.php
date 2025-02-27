@@ -9,13 +9,13 @@ use App\Models\Disponibilite;
 class PassagerController extends Controller
 {
 
-    public function index()
+    public function dashboard()
     {
         $disponibilites = Disponibilite::with('chauffeur') 
                                         ->where('statut', 'active') 
                                         ->get();
     
-        return view('passager.index', compact('disponibilites')); 
+        return view('passager.dashboard', compact('disponibilites')); 
     }
     
 }

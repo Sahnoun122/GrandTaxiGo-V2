@@ -29,9 +29,9 @@
     <aside id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-gray-800 text-white transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40">
         <div class="p-4">
             <h2 class="text-2xl font-bold mb-6">lost and found</h2>
-            <nav>
-                <a href="#" class="block py-2 px-4 bg-gray-700 rounded mb-2">Tableau de bord</a>
-                <a href=" {{ route('chauffeur.create') }} " class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">create</a>
+            <nav> 
+                <a href="{{ route('passager.dashboard') }}" class="block py-2 px-4 bg-gray-700 rounded mb-2">Tableau de bord</a>
+                <a href=" {{ route('passager.trajets') }} " class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">trajets</a>
                 <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Annonces</a>
                 <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Transactions</a>
                 <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Évaluations</a>
@@ -43,7 +43,7 @@
 
     <main class="lg:ml-64 p-8">
         <header method="post" class="bg-white shadow rounded-lg p-4 mb-6">
-            <form class="max-w-md mx-auto" action="{{ route('passager.index') }}" >  
+            <form class="max-w-md mx-auto" action="{{ route('passager.dashboard') }}" >  
                 @csrf 
                 <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                 <div class="relative">
@@ -59,81 +59,69 @@
             {{-- @php
             echo $_SESSION['user_id'];    
         @endphp --}}
-                    @foreach($disponibilites as $disponibilite)
-                    <div class="reservation bg-white shadow-lg rounded-lg p-6 my-4 max-w-xl mx-auto">
-                        <h3 class="text-xl font-semibold text-gray-800">{{ $disponibilite->chauffeur->nom }} {{ $disponibilite->chauffeur->prenom }}</h3>
-                        <img src="{{ asset('storage/app/public/photos' . $disponibilite->chauffeur->photos) }}" alt="Photo du chauffeur" class="rounded-full w-24 h-24 object-cover my-4">
-                        
-                        <p class="text-gray-700"><strong>Destination:</strong> {{ $disponibilite->destination }}</p>
-                        <p class="text-gray-700"><strong>Date de début:</strong> {{ $disponibilite->dateDebut }}</p>
-                        <p class="text-gray-700"><strong>Date de fin:</strong> {{ $disponibilite->dateFin }}</p>
-                        <p class="text-gray-700"><strong>Statut:</strong> {{ $disponibilite->statut }}</p>
-                    
-                        <button id="openModalBtn" class="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        @foreach($disponibilites as $disponibilite)
+        <div class="reservation bg-white shadow-lg rounded-lg p-6 my-4 max-w-xl mx-auto">
+            <h3 class="text-xl font-semibold text-gray-800">{{ $disponibilite->chauffeur->nom }} {{ $disponibilite->chauffeur->prenom }}</h3>
+            <img src="{{ asset('storage/app/public/photos' . $disponibilite->chauffeur->photos) }}" alt="Photo du chauffeur" class="rounded-full w-24 h-24 object-cover my-4">
+            
+            <p class="text-gray-700"><strong>Destination:</strong> {{ $disponibilite->destination }}</p>
+            <p class="text-gray-700"><strong>Date de début:</strong> {{ $disponibilite->dateDebut }}</p>
+            <p class="text-gray-700"><strong>Date de fin:</strong> {{ $disponibilite->dateFin }}</p>
+            <p class="text-gray-700"><strong>Statut:</strong> {{ $disponibilite->statut }}</p>
+        
+            <!-- Ajout d'un attribut data-id pour chaque bouton de réservation -->
+            <button id="openModalBtn" class="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500" data-id="{{ $disponibilite->id }}">
+                Réserver
+            </button>
+        </div>
+    
+        <!-- Modal de réservation -->
+        <div id="reservationModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-lg shadow-xl p-6 w-96">
+                <h2 class="text-2xl font-semibold text-center text-gray-800 mb-4">Informations de Réservation</h2>
+    
+                <!-- Formulaire de réservation -->
+                <form action="{{ route('passager.store') }}" method="POST" class="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg">
+                    @csrf
+                    <h2 class="text-2xl font-semibold text-center mb-6">Réserver un Trajet</h2>
+    
+                    <!-- Champ caché pour l'ID de la disponibilité -->
+                    <input type="hidden" name="id_dispo" id="id_dispo" value="">
+    
+                    <div class="mb-4">
+                        <label for="date" class="block text-sm font-medium text-gray-700">Date du Trajet</label>
+                        <input type="date" id="date" name="date" required class="mt-2 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        @error('date')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+    
+                    <div class="mb-4">
+                        <label for="lieu" class="block text-sm font-medium text-gray-700">Lieu de départ</label>
+                        <input type="text" id="lieu" name="lieu" required class="mt-2 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Entrez le lieu de départ">
+                        @error('lieu')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+    
+                    <div class="mb-4">
+                        <label for="destination" class="block text-sm font-medium text-gray-700">Destination</label>
+                        <input type="text" id="destination" name="destination" required class="mt-2 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Entrez la destination">
+                        @error('destination')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+    
+                    <div class="mt-6 text-center">
+                        <button type="submit" class="w-full py-3 px-4 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Réserver
                         </button>
                     </div>
-                    
-                    <div id="reservationModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 hidden">
-                        <div class="bg-white rounded-lg shadow-xl p-6 w-96">
-                            <h2 class="text-2xl font-semibold text-center text-gray-800 mb-4">Informations de Réservation</h2>
-                    
-                            <form action="" method="POST" class="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg">
-                                @csrf
-                                <h2 class="text-2xl font-semibold text-center mb-6">Réserver un Trajet</h2>
-                            
-                                <div class="mb-4">
-                                    <label for="date" class="block text-sm font-medium text-gray-700">Date du Trajet</label>
-                                    <input type="date" id="date" name="date" required class="mt-2 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                                    @error('date')
-                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            
-                                <div class="mb-4">
-                                    <label for="lieu" class="block text-sm font-medium text-gray-700">Lieu de départ</label>
-                                    <input type="text" id="lieu" name="lieu" required class="mt-2 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Entrez le lieu de départ">
-                                    @error('lieu')
-                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            
-                                <div class="mb-4">
-                                    <label for="destination" class="block text-sm font-medium text-gray-700">Destination</label>
-                                    <input type="text" id="destination" name="destination" required class="mt-2 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Entrez la destination">
-                                    @error('destination')
-                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            
-                                <div class="mb-4">
-                                    <label for="id_dispo" class="block text-sm font-medium text-gray-700">Choisir un Chauffeur</label>
-                                    {{-- <select name="id_dispo" id="id_dispo" required class="mt-2 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                                        @foreach($disponibilites as $disponibilite)
-                                            <option value="{{ $disponibilite->id }}">
-                                                {{ $disponibilite->chauffeur->nom }} - {{ $disponibilite->dateDebut }} à {{ $disponibilite->dateFin }}
-                                            </option>
-                                        @endforeach
-                                    </select> --}}
-                                    @error('id_dispo')
-                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            
-                                <div class="mt-6 text-center">
-                                    <button type="submit" class="w-full py-3 px-4 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                        Réserver
-                                    </button>
-                                </div>
-                            </form>
-                            
-                            
-                        </div>
-                    </div>
-                    @endforeach
-
-      
-        </header>
+                </form>
+            </div>
+        </div>
+    @endforeach
+    
         <div class="container">
             @yield('main')
 
@@ -185,13 +173,28 @@
 
 
 
-document.getElementById('openModalBtn').addEventListener('click', function() {
-                            document.getElementById('reservationModal').classList.remove('hidden');
-                        });
-                    
-                        document.getElementById('closeModalBtn').addEventListener('click', function() {
-                            document.getElementById('reservationModal').classList.add('hidden');
-                        });
+document.addEventListener('DOMContentLoaded', function () {
+    const reservationBtns = document.querySelectorAll('#openModalBtn');
+    const modal = document.getElementById('reservationModal');
+    const idDispoInput = document.getElementById('id_dispo');
+
+    reservationBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const dispoId = btn.getAttribute('data-id');  
+
+            idDispoInput.value = dispoId;  
+
+            modal.classList.remove('hidden');  
+        });
+    });
+
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal) {
+            modal.classList.add('hidden'); 
+        }
+    });
+});
+
 
 
 

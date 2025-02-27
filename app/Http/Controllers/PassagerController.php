@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Disponibilite;
+
 
 class PassagerController extends Controller
 {
-    public function dashboard()
+    public function index()
     {
-        return view('passager.dashboard'); 
+        $disponibilit = Disponibilite::all();  
+    
+        return view('chauffeur.index', ['disponibilite' => $disponibilit]);
     }
 }

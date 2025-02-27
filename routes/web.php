@@ -7,17 +7,19 @@ use App\Http\Controllers\DisponibiliteController;
 use App\Http\Controllers\PassagerController;
 
 
-$_SESSION['user_id'] = 2;
+// $_SESSION['user_id'] = 2;
 
 
 Route::get('/chauffeur/index', [ChauffeurController::class, 'dashboard'])->name('chauffeur.index');
 
-Route::get('/passager/index', [PassagerController::class, 'dashboard'])->name('passager.index');
+Route::get('/passager/index', [PassagerController::class, 'index'])->name('passager.index');
 
 
 // Route::POST('chauffeur.index' , [DisponibiliteController::class , 'index']);
 // Route::POST('chauffeur.show' , [DisponibiliteController::class , 'index']);
 // Route::POST('chauffeur.details' , [DisponibiliteController::class , 'index']);
+
+Route::get('passager', [DisponibiliteController::class, 'index'])->name('passager.index');
 
 Route::resource('chauffeur', DisponibiliteController::class); 
 

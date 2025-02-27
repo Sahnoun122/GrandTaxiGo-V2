@@ -26,7 +26,6 @@ class TrajetController extends Controller
             'id_dispo' => 'required|exists:disponibilites,id',
         ]);
     
-        // Création d'un nouveau trajet
         Trajet::create([
             'date' => $request->date,
             'lieu' => $request->lieu,
@@ -51,6 +50,35 @@ class TrajetController extends Controller
         $trajet->save();
 
         return redirect()->route('passager.trajets')->with('success', 'Trajet annulé avec succès.');
+    }
+
+
+    public function accept($id)
+    {
+        $trajet = Trajet::find($id);
+
+        if (!$trajet || $trajet->disponibilite->chauffeur->id != auth()->id()) {
+            return redirect()->route('chauffeur.trajets')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à accepter ce trajet.');
+        }
+
+        $trajet->statut = 'accepte';
+        $trajet->save();
+
+        return redirect()->route('chauffeur.trajets')->with('success', 'Trajet accepté avec succès.');
+    }
+
+    public function refuse($id)
+    {
+        $trajet = Trajet::find($id);
+
+        if (!$trajet || $trajet->disponibilite->chauffeur->id != auth()->id()) {
+            return redirect()->route('chauffeur.trajets')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à refuser ce trajet.');
+        }
+
+        $trajet->statut = 'refuse';
+        $trajet->save();
+
+        return redirect()->route('chauffeur.trajets')->with('success', 'Trajet refusé avec succès.');
     }
     
 }

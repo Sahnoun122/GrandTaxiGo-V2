@@ -47,6 +47,10 @@ Route::post('/passager/dashboard', [TrajetController::class, 'store'])->name('pa
 
 Route::post('/trajet/{id}/annule', [TrajetController::class, 'annule'])->name('trajet.annule');
 
+// routes/web.php
+
+Route::post('/trajets/{id}/accept', [TrajetController::class, 'accept'])->name('trajets.accept');
+Route::post('/trajets/{id}/refuse', [TrajetController::class, 'refuse'])->name('trajets.refuse');
 
 // Route::get('/passager/dashboard', [PassagerController::class, 'index'])
 //     ->middleware(['auth', 'role:passager'])

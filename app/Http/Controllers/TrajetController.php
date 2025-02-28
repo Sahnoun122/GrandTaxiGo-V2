@@ -10,22 +10,19 @@ class TrajetController extends Controller
 {
     public function trajets()
     {
-        $trajets = Trajet::all();
-        // dd($trajets);
-
+        $trajets = Trajet::all();  
         return view('passager.trajets', compact('trajets'));
-
     }
-
+    
+    
     public function trajet()
     {
-        $trajets = Trajet::with('chauffeur')->get(); 
-    //    dd($trajets);
+        $trajets = Trajet::all();  
         return view('chauffeur.trajet', compact('trajets'));
     }
+    
 
     public function store(Request $request)
-
     {
         $request->validate([
             'date' => 'required|date',
@@ -50,9 +47,9 @@ class TrajetController extends Controller
     {
         $trajet = Trajet::find($id);
 
-        if (!$trajet || $trajet->id_passager != auth()->id()) {
-            return redirect()->route('passager.trajets')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à annuler ce trajet.');
-        }
+        // if (!$trajet || $trajet->id_passager != auth()->id()) {
+        //     return redirect()->route('passager.trajets')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à annuler ce trajet.');
+        // }
 
         $trajet->statut = 'annule';
         $trajet->save();
@@ -65,9 +62,9 @@ class TrajetController extends Controller
     {
         $trajet = Trajet::find($id);
 
-        if (!$trajet || $trajet->disponibilite->chauffeur->id != auth()->id()) {
-            return redirect()->route('chauffeur.trajet')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à accepter ce trajet.');
-        }
+        // if (!$trajet || $trajet->disponibilite->chauffeur->id != auth()->id()) {
+        //     return redirect()->route('chauffeur.trajet')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à accepter ce trajet.');
+        // }
 
         $trajet->statut = 'accepte';
         $trajet->save();
@@ -79,9 +76,9 @@ class TrajetController extends Controller
     {
         $trajet = Trajet::find($id);
 
-        if (!$trajet || $trajet->disponibilite->chauffeur->id != auth()->id()) {
-            return redirect()->route('chauffeur.trajets')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à refuser ce trajet.');
-        }
+        // if (!$trajet || $trajet->disponibilite->chauffeur->id != auth()->id()) {
+        //     return redirect()->route('chauffeur.trajets')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à refuser ce trajet.');
+        // }
 
         $trajet->statut = 'refuse';
         $trajet->save();

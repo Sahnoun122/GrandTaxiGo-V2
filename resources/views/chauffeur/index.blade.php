@@ -32,12 +32,12 @@
         <div class="p-4">
             <h2 class="text-2xl font-bold mb-6">lost and found</h2>
             <nav>
-                <a href="#" class="block py-2 px-4 bg-gray-700 rounded mb-2">Tableau de bord</a>
+                <a href="{{ route('chauffeur.index') }}" class="block py-2 px-4 bg-gray-700 rounded mb-2">Tableau de bord</a>
                 <a href=" {{ route('chauffeur.create') }} " class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">create</a>
-                <a href="{{ route('chauffeur.trajets') }}" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">trajets</a>
+                <a href="{{ route('chauffeur.trajet') }}" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">trajets</a>
                 <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Transactions</a>
                 <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Évaluations</a>
-            </nav>  
+            </nav> 
         </div>
     </aside>
 

@@ -12,10 +12,11 @@ class DisponibiliteController extends Controller
      */
     public function index()
     {
-        $disponibilite = Disponibilite::all();  
-    
+        $disponibilite = Disponibilite::where('chauffeur_id', auth()->id())->get();  
+        
         return view('chauffeur.index', ['disponibilite' => $disponibilite]);
     }
+    
     
     /**
      * Show the form for creating a new resource.

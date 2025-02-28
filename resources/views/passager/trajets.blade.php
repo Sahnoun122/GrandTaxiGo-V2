@@ -61,7 +61,7 @@
 <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
     <h2 class="text-2xl font-semibold text-center mb-6">Historique de mes trajets</h2>
 
-    {{-- @if(session('success'))
+    @if(session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-md mb-6">
             {{ session('success') }}
         </div>
@@ -71,7 +71,7 @@
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md mb-6">
             {{ session('error') }}
         </div>
-    @endif --}}
+    @endif
 
   
 </div>
@@ -92,6 +92,8 @@
         @foreach($trajets as $trajet)
       
             <tr>
+                <td class="px-6 py-4"><p>{{ $trajet->id }}</p></td>
+
                 <td class="px-6 py-4"><p>{{ $trajet->date }}</p></td>
                 <td class="px-6 py-4">{{ $trajet->lieu }}</td>
                 <td class="px-6 py-4">{{ $trajet->destination }}</td>

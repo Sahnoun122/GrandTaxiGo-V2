@@ -1,11 +1,11 @@
 <!-- resources/views/chauffeur/trajets.blade.php -->
 {{-- @extends('layouts.app') --}}
 
-@section('content')
+{{-- @section('content')
     <div class="container">
         <h1>Tableau de bord du Chauffeur</h1>
     </div>
-@endsection
+@endsection --}}
 
 
 <!DOCTYPE html>
@@ -33,21 +33,18 @@
         <div class="p-4">
             <h2 class="text-2xl font-bold mb-6">lost and found</h2>
             <nav>
-                <a href="#" class="block py-2 px-4 bg-gray-700 rounded mb-2">Tableau de bord</a>
+                <a href="{{ route('chauffeur.index') }}" class="block py-2 px-4 bg-gray-700 rounded mb-2">Tableau de bord</a>
                 <a href=" {{ route('chauffeur.create') }} " class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">create</a>
-                <a href="{{ route('chauffeur.trajets') }}" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Annonces</a>
+                <a href="{{ route('chauffeur.trajet') }}" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">trajets</a>
                 <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Transactions</a>
                 <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Évaluations</a>
             </nav>  
         </div>
     </aside>
 
-    <!-- Overlay pour mobile -->
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-30 hidden lg:hidden"></div>
 
-    <!-- Main Content avec ajustement responsive -->
     <main class="lg:ml-64 p-8">
-        <!-- Header -->
         <header method="post" class="bg-white shadow rounded-lg p-4 mb-6">
             <form class="max-w-md mx-auto" action="{{ route('chauffeur.index') }}" >  
                 @csrf 
@@ -63,7 +60,7 @@
                 </div>
             </form>
 
-@section('content')
+{{-- @section('content')
 <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
     <h2 class="text-2xl font-semibold text-center mb-6">Mes trajets</h2>
 
@@ -78,7 +75,10 @@
             {{ session('error') }}
         </div>
     @endif
+    @endsection --}}
 
+
+    
     <table class="min-w-full bg-white border border-gray-300 rounded-md shadow-sm">
         <thead>
             <tr>
@@ -125,4 +125,3 @@
         
     </table>
 </div>
-@endsection

@@ -14,6 +14,8 @@ use App\Http\Controllers\TrajetController;
 
 Route::get('/chauffeur/index', [ChauffeurController::class, 'index'])->name('chauffeur.index');
 
+Route::get('/chauffeur/trajet', [TrajetController::class, 'trajet'])->name('chauffeur.trajet');
+
 
 // Route::POST('chauffeur.index' , [DisponibiliteController::class , 'index']);
 // Route::POST('chauffeur.show' , [DisponibiliteController::class , 'index']);
@@ -26,10 +28,10 @@ Route::resource('chauffeur', DisponibiliteController::class);
 Route::get('chauffeur', [DisponibiliteController::class, 'index'])->name('chauffeur.index');
 
 
+// Route::get('/chauffeur/trajet', [TrajetController::class, 'trajet'])->name('chauffeur.trajet');
 
 Route::get('/passager/trajets', [TrajetController::class, 'trajets'])->name('passager.trajets');
 
-Route::get('/chauffeur/trajet', [TrajetController::class, 'trajet'])->name('chauffeur.trajet');
 
 
 // Route::get('/passager/index', [PassagerController::class, 'index'])->name('passager.index');

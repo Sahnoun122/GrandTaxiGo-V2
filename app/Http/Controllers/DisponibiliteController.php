@@ -19,11 +19,12 @@ class DisponibiliteController extends Controller
 
     public function index()
     {
-        $disponibilite = Disponibilite::where('chauffeur_id', auth()->id())->get();  
+        $disponibilite = Disponibilite::all();  
         
-        return view('chauffeur.index', ['disponibilite' => $disponibilite]);
+        // dd($disponibilite);
+
+        return view('chauffeur.index', compact('disponibilite'));    
     }
-    
     /**
      * Show the form for creating a new resource.
      */

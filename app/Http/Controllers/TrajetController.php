@@ -35,8 +35,8 @@ class TrajetController extends Controller
             'date' => $request->date,
             'lieu' => $request->lieu,
             'destination' => $request->destination,
-            'id_passager' => auth()->id(), 
-            'id_dispo' => $request->id_dispo, 
+            'id_passager' => auth()->id(), // Add the authenticated user's ID
+            'id_dispo' => $request->id_dispo,
             'statut' => 'en attente',
         ]);
     

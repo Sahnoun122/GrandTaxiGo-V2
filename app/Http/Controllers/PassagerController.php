@@ -9,13 +9,21 @@ use App\Models\Disponibilite;
 class PassagerController extends Controller
 {
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
-        $disponibilites = Disponibilite::with('chauffeur') 
-                                        ->where('statut', 'active') 
-                                        ->get();
+        if ($request->has('search') && !empty($request->search)) {
+            $disponibilites = Disponibilite::with('chauffeur')
+                                            ->where('statut', 'active')
+                                            ->where('destination', 'like', '%' . $request->search . '%') // Recherche par destination
+                                            ->get();
+        } else {
+            $disponibilites = Disponibilite::with('chauffeur')
+                                            ->where('statut', 'active')
+                                            ->get();
+        }
     
-        return view('passager.dashboard', compact('disponibilites')); 
+        return view('passager.dashboard', compact('disponibilites'));
     }
+    
     
 }

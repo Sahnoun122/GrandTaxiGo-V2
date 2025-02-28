@@ -10,13 +10,19 @@ class DisponibiliteController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public function index()
+    // {
+    //     $disponibilite = Disponibilite::all();  
+    
+    //     return view('chauffeur.index', ['disponibilite' => $disponibilite]);
+    // }
+
     public function index()
     {
         $disponibilite = Disponibilite::where('chauffeur_id', auth()->id())->get();  
         
         return view('chauffeur.index', ['disponibilite' => $disponibilite]);
     }
-    
     
     /**
      * Show the form for creating a new resource.

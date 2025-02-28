@@ -10,11 +10,19 @@ class TrajetController extends Controller
 {
     public function trajets()
     {
-        $trajets = Trajet::with('disponibilite.chauffeur')->where('id_passager', auth()->id())->get();
+        $trajets = Trajet::all();
+        // dd($trajets);
+
         return view('passager.trajets', compact('trajets'));
 
     }
-    
+
+    public function trajet()
+    {
+        $trajets = Trajet::with('chauffeur')->get(); 
+    //    dd($trajets);
+        return view('chauffeur.trajet', compact('trajets'));
+    }
 
     public function store(Request $request)
 
@@ -58,13 +66,13 @@ class TrajetController extends Controller
         $trajet = Trajet::find($id);
 
         if (!$trajet || $trajet->disponibilite->chauffeur->id != auth()->id()) {
-            return redirect()->route('chauffeur.trajets')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à accepter ce trajet.');
+            return redirect()->route('chauffeur.trajet')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à accepter ce trajet.');
         }
 
         $trajet->statut = 'accepte';
         $trajet->save();
 
-        return redirect()->route('chauffeur.trajets')->with('success', 'Trajet accepté avec succès.');
+        return redirect()->route('chauffeur.trajet')->with('success', 'Trajet accepté avec succès.');
     }
 
     public function refuse($id)
@@ -78,7 +86,7 @@ class TrajetController extends Controller
         $trajet->statut = 'refuse';
         $trajet->save();
 
-        return redirect()->route('chauffeur.trajets')->with('success', 'Trajet refusé avec succès.');
+        return redirect()->route('chauffeur.trajet')->with('success', 'Trajet refusé avec succès.');
     }
     
 }

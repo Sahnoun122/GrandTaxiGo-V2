@@ -35,7 +35,7 @@
             <nav>
                 <a href="#" class="block py-2 px-4 bg-gray-700 rounded mb-2">Tableau de bord</a>
                 <a href=" {{ route('chauffeur.create') }} " class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">create</a>
-                <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Annonces</a>
+                <a href="{{ route('chauffeur.trajets') }}" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Annonces</a>
                 <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Transactions</a>
                 <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Évaluations</a>
             </nav>  
@@ -90,6 +90,8 @@
                 <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-900">Actions</th>
             </tr>
         </thead>
+
+        
         <tbody>
             @foreach($trajets as $trajet)
                 <tr>
@@ -99,14 +101,14 @@
                     <td class="px-6 py-4">{{ $trajet->passager->nom ?? 'Passager indisponible' }}</td>
                     <td class="px-6 py-4">{{ ucfirst($trajet->statut) }}</td>
                     <td class="px-6 py-4">
-                        @if($trajet->statut == 'pending')
+                        @if($trajet->statut == 'en attente')
                             <form action="{{ route('trajet.accept', $trajet->id) }}" method="POST" class="inline-block">
                                 @csrf
                                 <button type="submit" class="px-4 py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
                                     Accepter
                                 </button>
                             </form>
-
+        
                             <form action="{{ route('trajet.refuse', $trajet->id) }}" method="POST" class="inline-block ml-4">
                                 @csrf
                                 <button type="submit" class="px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
@@ -120,6 +122,7 @@
                 </tr>
             @endforeach
         </tbody>
+        
     </table>
 </div>
 @endsection

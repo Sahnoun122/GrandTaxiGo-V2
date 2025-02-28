@@ -29,28 +29,22 @@ Route::get('chauffeur', [DisponibiliteController::class, 'index'])->name('chauff
 
 Route::get('/passager/trajets', [TrajetController::class, 'trajets'])->name('passager.trajets');
 
+Route::get('/chauffeur/trajet', [TrajetController::class, 'trajet'])->name('chauffeur.trajet');
 
-// // Route GET pour afficher la liste des trajets
+
 // Route::get('/passager/index', [PassagerController::class, 'index'])->name('passager.index');
 
-// // Route POST pour soumettre un formulaire de réservation
 // Route::post('/passager', [TrajetController::class, 'store'])->name('passager.store');
-
-
 
 Route::get('/passager/dashboard', [PassagerController::class, 'dashboard'])->name('passager.dashboard');
 
 Route::post('/passager/dashboard', [TrajetController::class, 'store'])->name('passager.store');
 
 
+Route::post('/trajets/{id}/annule', [TrajetController::class, 'annule'])->name('trajets.annule');
 
-
-Route::post('/trajet/{id}/annule', [TrajetController::class, 'annule'])->name('trajet.annule');
-
-// routes/web.php
-
-Route::post('/trajets/{id}/accept', [TrajetController::class, 'accept'])->name('trajets.accept');
-Route::post('/trajets/{id}/refuse', [TrajetController::class, 'refuse'])->name('trajets.refuse');
+Route::post('/trajet/{id}/accept', [TrajetController::class, 'accept'])->name('trajet.accept');
+Route::post('/trajet/{id}/refuse', [TrajetController::class, 'refuse'])->name('trajet.refuse');
 
 // Route::get('/passager/dashboard', [PassagerController::class, 'index'])
 //     ->middleware(['auth', 'role:passager'])

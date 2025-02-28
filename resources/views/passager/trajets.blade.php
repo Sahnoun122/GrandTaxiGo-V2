@@ -58,7 +58,6 @@
                 </div>
             </form>
 
-@section('content')
 <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
     <h2 class="text-2xl font-semibold text-center mb-6">Historique de mes trajets</h2>
 
@@ -74,50 +73,46 @@
         </div>
     @endif --}}
 
-    <table class="min-w-full bg-white border border-gray-300 rounded-md shadow-sm">
-        <thead>
-            <tr>
-                <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-900">Date</th>
-                <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-900">Lieu de départ</th>
-                <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-900">Destination</th>
-                <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-900">Statut</th>
-                <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-900">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-
-
-            @foreach($trajets as $trajet)
-          
-                <tr>
-                    <td class="px-6 py-4">{{ $trajet->date }}</td>
-                    <td class="px-6 py-4">{{ $trajet->lieu }}</td>
-                    <td class="px-6 py-4">{{ $trajet->destination }}</td>
-                    <td class="px-6 py-4">{{ ucfirst($trajet->statut) }}</td>
-                    <td class="px-6 py-4">
-                        
-                        @if($trajet->statut !== 'annule')
-                            <form method="POST" action="{{ route('trajets.annule', $trajet->id) }}" class="inline-block">
-                                @csrf
-                                <button type="submit" class="px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                                    Annuler le trajet
-                                </button>
-                            </form>
-                           
-                        @else
-                            <span class="text-gray-500">Trajet annulé</span>
-                        @endif
-                    </td>
-                
-                </tr>
-            @endforeach
-
-            {{-- @php
-            dd($trajets);
-            @endphp --}}
-
-
-        </tbody>
-    </table>
+  
 </div>
-@endsection
+
+<table class="min-w-full bg-white border border-gray-300 rounded-md shadow-sm">
+    <thead>
+        <tr>
+            <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-900">Date</th>
+            <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-900">Lieu de départ</th>
+            <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-900">Destination</th>
+            <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-900">Statut</th>
+            <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-900">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+        @foreach($trajets as $trajet)
+      
+            <tr>
+                <td class="px-6 py-4"><p>{{ $trajet->date }}</p></td>
+                <td class="px-6 py-4">{{ $trajet->lieu }}</td>
+                <td class="px-6 py-4">{{ $trajet->destination }}</td>
+                <td class="px-6 py-4">{{ ucfirst($trajet->statut) }}</td>
+                <td class="px-6 py-4">
+                    
+                    @if($trajet->statut != 'annule')
+                        <form method="POST" action="{{ route('trajets.annule', $trajet->id) }}" class="inline-block">
+                            @csrf
+                            <button type="submit" class="px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                                Annuler le trajet
+                            </button>
+                        </form>
+                       
+                    @else
+                        <span class="text-gray-500">Trajet annulé</span>
+                    @endif
+                </td>
+            
+            </tr>
+        @endforeach
+
+    </tbody>
+</table>

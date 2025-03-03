@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChauffeurController;
@@ -15,6 +16,8 @@ use App\Http\Controllers\TrajetController;
 Route::get('/chauffeur/index', [ChauffeurController::class, 'index'])->name('chauffeur.index');
 
 Route::get('/chauffeur/trajet', [TrajetController::class, 'trajet'])->name('chauffeur.trajet');
+
+Route::get('/admin/dashboardAdmin' , [AdminController::class , 'index'])->name('admin.dashboardAdmin');
 
 
 // Route::POST('chauffeur.index' , [DisponibiliteController::class , 'index']);

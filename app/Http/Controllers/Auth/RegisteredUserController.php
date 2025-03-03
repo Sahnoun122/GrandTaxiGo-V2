@@ -61,7 +61,7 @@ class RegisteredUserController extends Controller
     
         if ($user->role === 'chauffeur') {
             return redirect()->route('chauffeur.index'); 
-        } else {
+        } else  {
             return redirect()->route('passager.index'); 
         }
     }

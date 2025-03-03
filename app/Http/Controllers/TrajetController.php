@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class TrajetController extends Controller
 {
+    // public function __construct(){
+    //     $this->middleware('auth');
+    // }
+  
     public function trajets()
     {
         $trajets = Trajet::all();  

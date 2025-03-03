@@ -52,7 +52,7 @@ Route::post('/trajet/{id}/refuse', [TrajetController::class, 'refuse'])->name('t
 //     ->middleware(['auth', 'role:passager'])
 //     ->name('passager.index');
 
-// Route::get('/chauffeur/dashboard', [ChauffeurController::class, 'index'])
+// Route::get('/chauffeur/index', [ChauffeurController::class, 'index'])
 //     ->middleware(['auth', 'role:chauffeur'])
 //     ->name('chauffeur.index');
 // Route::get('/', function () {

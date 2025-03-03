@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Trajet extends Model
 {
     use HasFactory;
-    use SoftDeletes;
+    // use SoftDeletes;
 
     protected $fillable = ['date', 'lieu', 'destination', 'id_passager', 'id_dispo', 'statut'];
 

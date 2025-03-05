@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Trajet;
 use App\Models\Disponibilite;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Email;
 class TrajetController extends Controller
 {
     // public function __construct(){
@@ -39,7 +40,7 @@ class TrajetController extends Controller
             'date' => $request->date,
             'lieu' => $request->lieu,
             'destination' => $request->destination,
-            'id_passager' => auth()->id(), // Add the authenticated user's ID
+            'id_passager' => auth()->id(),
             'id_dispo' => $request->id_dispo,
             'statut' => 'en attente',
         ]);
@@ -61,20 +62,41 @@ class TrajetController extends Controller
         return redirect()->route('passager.trajets')->with('success', 'Trajet annulé avec succès.');
     }
 
-
     public function accept($id)
     {
         $trajet = Trajet::find($id);
-
-        // if (!$trajet || $trajet->disponibilite->chauffeur->id != auth()->id()) {
-        //     return redirect()->route('chauffeur.trajet')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à accepter ce trajet.');
+    
+        if (!$trajet) {
+            return redirect()->route('chauffeur.trajet')
+                             ->with('error', 'Trajet non trouvé.');
+        }
+    
+        // Vérification de l'autorisation (si nécessaire)
+        // if (!$trajet->disponibilite->chauffeur->id != auth()->id()) {
+        //     return redirect()->route('chauffeur.trajet')->with('error', 'Vous n\'êtes pas autorisé à accepter ce trajet.');
         // }
-
+    
+        // Changer le statut du trajet
         $trajet->statut = 'accepte';
         $trajet->save();
-
-        return redirect()->route('chauffeur.trajet')->with('success', 'Trajet accepté avec succès.');
+    
+        try {
+            // Envoi de l'email
+            Mail::to($trajet->passager->email)->send(new Email($trajet));
+        } catch (\Exception $e) {
+            // dd($e);
+            // Log l'erreur et renvoie un message d'échec si l'email ne peut pas être envoyé
+            // \Log::error('Échec de l\'envoi de l\'email : ' . $e->getMessage());
+            return redirect()->route('chauffeur.trajet')
+                             ->with('error', 'Trajet accepté, mais échec de l\'envoi de l\'email.');
+        }
+    
+        // Retour avec un message de succès
+        return redirect()->route('chauffeur.trajet')
+                         ->with('success', 'Trajet accepté avec succès. Email envoyé au passager.');
     }
+    
+
 
     public function refuse($id)
     {

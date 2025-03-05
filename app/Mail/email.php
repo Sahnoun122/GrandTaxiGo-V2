@@ -8,17 +8,43 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Models\Trajet;
 
-class email extends Mailable
+class Email extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct()
+    public $trajet;
+
+    public function __construct(Trajet $trajet)
     {
-        //
+        $this->trajet = $trajet;
+    }
+
+    public function build()
+    {
+        // Générer les données du QR Code
+        $qrCodeData = json_encode([
+            'id' => $this->trajet->id,
+            'date' => $this->trajet->date,
+            'lieu' => $this->trajet->lieu,
+            'destination' => $this->trajet->destination,
+            'passager' => $this->trajet->id_passager,
+        ]);
+
+        // Générer le QR Code sous forme de chaîne de caractères en base64
+        $qrCode = QrCode::size(200)->format('png')->generate($qrCodeData);
+        
+        // Construction de l'email
+        return $this->view('passager.accepter')
+                    ->subject('Votre réservation a été acceptée')
+                    ->with([
+                        'trajet' => $this->trajet,
+                    ])
+                    ->attachData($qrCode, 'qr_code.png', [
+                        'mime' => 'image/png',
+                    ]);
     }
 
     /**
@@ -27,7 +53,7 @@ class email extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Email',
+            subject: 'Confirmation de réservation',
         );
     }
 
@@ -37,7 +63,7 @@ class email extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'view.name', // Changez ici si nécessaire
         );
     }
 

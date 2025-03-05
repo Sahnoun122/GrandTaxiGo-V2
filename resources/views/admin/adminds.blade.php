@@ -19,7 +19,7 @@
 </head>
 
 <body class="bg-gray-100">
-    <!-- Menu Burger pour mobile -->
+
     <button id="menuButton" class="lg:hidden fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path id="menuIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -27,12 +27,11 @@
         </svg>
     </button>
 
-    <!-- Sidebar avec classe pour mobile -->
     <aside id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-gray-800 text-white transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40">
         <div class="p-4">
             <h2 class="text-2xl font-bold mb-6">lost and found</h2>
             <nav>
-                <a href="{{ route('admin.admintrj') }}" class="block py-2 px-4 bg-gray-700 rounded mb-2">Tableau de bord</a>
+                <a href="{{ route('admin.dashboardAdmin') }}" class="block py-2 px-4 bg-gray-700 rounded mb-2">Tableau de bord</a>
                 <a href=" {{ route('admin.admintrj') }} " class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">trajets</a>
                 <a href="{{ route('admin.adminds') }}" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Disponibilite</a>
                 <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">Transactions</a>
@@ -41,12 +40,9 @@
         </div>
     </aside>
 
-    <!-- Overlay pour mobile -->
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-30 hidden lg:hidden"></div>
 
-    <!-- Main Content avec ajustement responsive -->
     <main class="lg:ml-64 p-8">
-        <!-- Header -->
         <header method="post" class="bg-white shadow rounded-lg p-4 mb-6">
             <form class="max-w-md mx-auto" action="{{ route('chauffeur.index') }}" >  
                 @csrf 
@@ -66,43 +62,42 @@
         @endphp --}}
 
 
-@section('content')
-    <h1 class="text-3xl font-bold mb-6">Gestion des utilisateurs</h1>
-
-    @if(session('success'))
-        <div class="bg-green-500 text-white p-4 rounded-lg mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
-        <table class="table-auto w-full text-left">
-            <thead>
-                <tr class="bg-gray-100 text-gray-700">
-                    <th class="px-4 py-2 border-b">Nom</th>
-                    <th class="px-4 py-2 border-b">Email</th>
-                    <th class="px-4 py-2 border-b">Rôle</th>
-                    <th class="px-4 py-2 border-b">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($users as $user)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-2 border-b">{{ $user->nom }} {{ $user->prenom }}</td>
-                        <td class="px-4 py-2 border-b">{{ $user->email }}</td>
-                        <td class="px-4 py-2 border-b">{{ $user->Role }}</td>
-                        <td class="px-4 py-2 border-b">
-                            {{-- <a href="{{ route('admin.edit', $user->id) }}" class="text-blue-500 hover:text-blue-700">Éditer</a> |  --}}
-                            {{-- <form action="{{ route('admin.destroy', $user->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:text-red-700">Supprimer</button>
-                            </form> --}}
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        @section('content')
+            <h1 class="text-3xl font-bold mb-6">Gestion des disponibilités</h1>
+        
+            <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+                <table class="min-w-full table-auto text-left">
+                    <thead>
+                        <tr class="bg-gray-100 text-gray-700">
+                            <th class="px-4 py-2 border-b">Chauffeur</th>
+                            <th class="px-4 py-2 border-b">Date Début</th>
+                            <th class="px-4 py-2 border-b">Date Fin</th>
+                            <th class="px-4 py-2 border-b">Statut</th>
+                            <th class="px-4 py-2 border-b">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($disponibilites as $disponibilite)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-2 border-b">{{ $disponibilite->chauffeur->nom }} {{ $disponibilite->chauffeur->prenom }}</td>
+                                <td class="px-4 py-2 border-b">{{ $disponibilite->dateDebut }}</td>
+                                <td class="px-4 py-2 border-b">{{ $disponibilite->dateFin }}</td>
+                                <td class="px-4 py-2 border-b">
+                                    @if($disponibilite->statut == 'active')
+                                        <span class="text-green-500 font-semibold">{{ $disponibilite->statut }}</span>
+                                    @else
+                                        <span class="text-red-500 font-semibold">{{ $disponibilite->statut }}</span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-2 border-b">
+                                    {{-- <a href="{{ route('admin.update', $disponibilite->id) }}" class="text-blue-500 hover:text-blue-700">Modifier</a> --}}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        
     </div>
 
         
@@ -115,9 +110,6 @@
 
 
         </div>
-
-
-        <!-- Recent Users Table -->
         <div class="bg-white rounded-lg shadow">
             <div class="p-6">
                 <h3 class="text-lg font-semibold mb-4">Utilisateurs récents</h3>

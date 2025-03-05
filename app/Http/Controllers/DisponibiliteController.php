@@ -47,21 +47,20 @@ class DisponibiliteController extends Controller
         }
     
         $request->validate([
-            'dateDebut' => 'required',
-            'dateFin' => 'required',
-            'destination' => 'required',
-            'statut' => 'required',
-            'id_chauffeur'  
+            'date_debut' => 'required|date', // Utilisez les noms de la base de données
+            'date_fin' => 'required|date',
+            'heure' => 'required|date_format:H:i', // Validation pour le champ heure (format HH:MM)
+            'destination' => 'required|string|max:255',
+            'statut' => 'required|in:active,desactive',
         ]);
     
-        $disponibiliteData = $request->all();
+        $disponibiliteData = $request->only(['date_debut', 'date_fin', 'heure', 'destination', 'statut']);
         $disponibiliteData['id_chauffeur'] = auth()->user()->id; 
     
         Disponibilite::create($disponibiliteData);
     
-        return redirect()->route('chauffeur.index')->with('success', 'Disponibilite ajoutée avec succès');
+        return redirect()->route('chauffeur.index')->with('success', 'Disponibilité ajoutée avec succès');
     }
-    
 
     /**
      * Display the specified resource.
@@ -86,22 +85,22 @@ class DisponibiliteController extends Controller
     public function update(Request $request, string $id)
     {
         $validateData = $request->validate([
-            'dateDebut' => 'required|date',
-            'dateFin' => 'required|date',
+            'date_debut' => 'required|date',
+            'date_fin' => 'required|date',
+            'heure' => 'required|date_format:H:i', // Validation pour le champ heure
             'destination' => 'required|string|max:255',
             'statut' => 'required|in:active,desactive',
         ]);
     
-      
         $disponibilite = Disponibilite::findOrFail($id);
-        
+    
         if ($disponibilite->id_chauffeur !== auth()->id()) {
             return redirect()->route('chauffeur.index')->with('error', 'Unauthorized action');
         }
     
         $disponibilite->update($validateData);
     
-        return redirect()->route('chauffeur.index')->with('success', 'Disponibilite mise à jour avec succès');
+        return redirect()->route('chauffeur.index')->with('success', 'Disponibilité mise à jour avec succès');
     }
     
     /**

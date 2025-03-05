@@ -14,12 +14,11 @@ class RoleMiddleware
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      * @param  string  $role  // Le rôle attendu
      */
-    // public function handle(Request $request, Closure $next, string $role): Response
-    // {
-    //     if (!auth()->check() || auth()->user()->role !== $role) {
-    //         return redirect('/')->with('error', 'Vous n\'avez pas accès à cette page.');
-    //     }
-
-    //     return $next($request);
-    // }
+    public function handle(Request $request, Closure $next, string $role): Response
+    {
+        if (!auth()->check() || auth()->user()->role !== $role) {
+            return redirect('/')->with('error', 'Vous n\'avez pas accès à cette page.');
+        }
+        return $next($request);
+    }
 }

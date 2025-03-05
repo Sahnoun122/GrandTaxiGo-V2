@@ -17,8 +17,12 @@
                             {{ __('Passager Dashboard') }}
                         </x-nav-link>
                     @elseif(Auth::user()->role === 'chauffeur')
-                        <x-nav-link :href="route('chauffeur.index')" :active="request()->routeIs('chauffeur.dashboard')">
+                        <x-nav-link :href="route('chauffeur.index')" :active="request()->routeIs('chauffeur.index')">
                             {{ __('Chauffeur Dashboard') }}
+                        </x-nav-link>
+                    @elseif(Auth::user()->role === 'admin')
+                        <x-nav-link :href="route('admin.dashboardAdmin')" :active="request()->routeIs('admin.dashboardAdmin')">
+                            {{ __('Admin Dashboard') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -73,16 +77,19 @@
 
     <!-- Responsive Navigation Menu (Mobile) -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <!-- Liens de navigation pour mobile -->
+        <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
             @if(Auth::user()->role === 'passager')
-                <x-responsive-nav-link :href="route('passager.dashboard')" :active="request()->routeIs('passager.dashboard')">
+                <x-nav-link :href="route('passager.dashboard')" :active="request()->routeIs('passager.dashboard')">
                     {{ __('Passager Dashboard') }}
-                </x-responsive-nav-link>
+                </x-nav-link>
             @elseif(Auth::user()->role === 'chauffeur')
-                <x-responsive-nav-link :href="route('chauffeur.index')" :active="request()->routeIs('chauffeur.dashboard')">
+                <x-nav-link :href="route('chauffeur.index')" :active="request()->routeIs('chauffeur.index')">
                     {{ __('Chauffeur Dashboard') }}
-                </x-responsive-nav-link>
+                </x-nav-link>
+            @elseif(Auth::user()->role === 'admin')
+                <x-nav-link :href="route('admin.dashboardAdmin')" :active="request()->routeIs('admin.dashboardAdmin')">
+                    {{ __('Admin Dashboard') }}
+                </x-nav-link>
             @endif
         </div>
 

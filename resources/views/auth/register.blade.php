@@ -1,7 +1,7 @@
 <x-guest-layout>
     <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
-        @csrf
 
+        @csrf
         <!-- Name -->
         <div>
             <x-input-label for="nom" :value="__('nom')" />
@@ -65,6 +65,11 @@
             <x-primary-button class="ms-4">
                 {{ __('Register') }}
             </x-primary-button>
+
+            <a href="/auth/facebook">facebook</a>
+            <a href="{{ route('auth.google') }}">google</a>
+
         </div>
+        @csrf
     </form>
 </x-guest-layout>

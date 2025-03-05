@@ -65,45 +65,45 @@
             echo $_SESSION['user_id'];    
         @endphp --}}
 
-
-@section('content')
-    <h1 class="text-3xl font-bold mb-6">Gestion des utilisateurs</h1>
-
-    @if(session('success'))
-        <div class="bg-green-500 text-white p-4 rounded-lg mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
-        <table class="table-auto w-full text-left">
-            <thead>
-                <tr class="bg-gray-100 text-gray-700">
-                    <th class="px-4 py-2 border-b">Nom</th>
-                    <th class="px-4 py-2 border-b">Email</th>
-                    <th class="px-4 py-2 border-b">Rôle</th>
-                    <th class="px-4 py-2 border-b">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($users as $user)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-2 border-b">{{ $user->nom }} {{ $user->prenom }}</td>
-                        <td class="px-4 py-2 border-b">{{ $user->email }}</td>
-                        <td class="px-4 py-2 border-b">{{ $user->Role }}</td>
-                        <td class="px-4 py-2 border-b">
-                            {{-- <a href="{{ route('admin.edit', $user->id) }}" class="text-blue-500 hover:text-blue-700">Éditer</a> |  --}}
-                            {{-- <form action="{{ route('admin.destroy', $user->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:text-red-700">Supprimer</button>
-                            </form> --}}
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+        @section('content')
+            <h1 class="text-3xl font-bold mb-6">Gestion des trajets</h1>
+        
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold">Revenus générés : <span class="text-green-500">{{ $revenus }} €</span></h3>
+                <h3 class="text-xl font-semibold">Nombre de trajets annulés : <span class="text-red-500">{{ $trajetsAnnules }}</span></h3>
+            </div>
+        
+            <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+                <table class="min-w-full table-auto text-left">
+                    <thead>
+                        <tr class="bg-gray-100 text-gray-700">
+                            <th class="px-4 py-2 border-b">Date</th>
+                            <th class="px-4 py-2 border-b">Passager</th>
+                            <th class="px-4 py-2 border-b">Statut</th>
+                            <th class="px-4 py-2 border-b">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($trajets as $trajet)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-2 border-b">{{ $trajet->date }}</td>
+                                <td class="px-4 py-2 border-b">{{ $trajet->passager->nom }} {{ $trajet->passager->prenom }}</td>
+                                <td class="px-4 py-2 border-b">
+                                    @if($trajet->statut == 'annule')
+                                        <span class="text-red-500 font-semibold">{{ $trajet->statut }}</span>
+                                    @else
+                                        <span class="text-green-500 font-semibold">{{ $trajet->statut }}</span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-2 border-b">
+                                    {{-- <a href="{{ route('admin.trajets.show', $trajet->id) }}" class="text-blue-500 hover:text-blue-700">Détails</a> --}}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            </div>
 
         
         </header>

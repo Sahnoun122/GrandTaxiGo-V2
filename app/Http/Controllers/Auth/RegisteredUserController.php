@@ -35,34 +35,35 @@ class RegisteredUserController extends Controller
             'prenom' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|string',
-            'photos' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
+            'role' => 'required|in:passager,chauffeur,admin', // Validate against specific values
+            'photos' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
     
         if ($request->hasFile('photos')) {
-            $path = $request->file('photos')->store('photos', 'public'); 
+            $path = $request->file('photos')->store('photos', 'public');
         } else {
-            $path = null; 
+            $path = null;
         }
     
-        // Créer l'utilisateur
         $user = User::create([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'role' => $request->role,
-            'photo' => $path, 
+            'Role' => $request->role,
+            'photos' => $path,
         ]);
     
         event(new Registered($user));
     
         Auth::login($user);
     
-        if ($user->role === 'chauffeur') {
-            return redirect()->route('chauffeur.index'); 
-        } else  {
-            return redirect()->route('passager.index'); 
+        if ($user->Role === 'chauffeur') {
+            return redirect()->route('chauffeur.index');
+        } elseif ($user->Role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        } else {
+            return redirect()->route('passager.dashboard');
         }
     }
 }

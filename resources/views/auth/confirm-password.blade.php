@@ -23,5 +23,6 @@
                 {{ __('Confirm') }}
             </x-primary-button>
         </div>
+        @csrf
     </form>
 </x-guest-layout>

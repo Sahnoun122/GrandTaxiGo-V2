@@ -2,63 +2,68 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payments;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Trajet;
+use App\Models\Disponibilite;
+
 
 class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        return view('admin.dashboardAdmin');
+            $users = User::all();
+            return view('admin.dashboardAdmin', compact('users'));
+  
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function edit(User $user)
     {
-        //
+        return view('admin.dashboardAdmin', compact('user'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function update(Request $request, User $user)
     {
-        //
+        $user->update($request->all());
+        return redirect()->route('admin.dashboardAdmin')->with('success', 'Utilisateur mis à jour avec succès');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect()->route('admin.dashboardAdmin')->with('success', 'Utilisateur supprimé avec succès');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+
+    public function trajets()
     {
-        //
+        $trajets = Trajet::all();
+        // $user= User::where('Role')
+        $revenus = Payments::sum('amount');  
+        $trajetsAnnules = Trajet::where('statut', 'annule')->count(); 
+
+        return view('admin.admintrj', compact('trajets', 'revenus', 'trajetsAnnules'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function show(Trajet $trajet)
     {
-        //
+        return view('admin.admintrj', compact('trajet'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+
+
+    public function dispo()
     {
-        //
+        $disponibilites = Disponibilite::all();
+        return view('admin.adminds', compact('disponibilites'));
     }
+
+    // public function update(Request $request, Disponibilite $disponibilite)
+    // {
+    //     $disponibilite->update($request->all());
+    //     return redirect()->route('admin.adminds')->with('success', 'Disponibilité mise à jour');
+    // }
+
 }

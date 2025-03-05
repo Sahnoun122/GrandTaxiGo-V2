@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
+use App\Models\payments;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -24,13 +24,19 @@ class User extends Authenticatable
         'photos',
         'email',
         'password',
-        'role',
+        'Role',
+        'google_id',
     ];
 
     public function disponibilites()
     {
         return $this->hasMany(Disponibilite::class, 'id_chauffeur');
     }
+
+    public function payments()
+{
+    return $this->hasMany(Payments::class);
+}
     /**
      * The attributes that should be hidden for serialization.
      *

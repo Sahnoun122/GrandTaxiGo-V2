@@ -9,24 +9,27 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('disponibilites', function (Blueprint $table) {
-            $table->id(); 
-            $table->date('dateDebut');
-            $table->date('dateFin'); 
-            $table->string('destination', 255); 
-            $table->enum('statut', ['active', 'desactive'])->default('active'); 
-            $table->unsignedBigInteger('id_chauffeur');
-            $table->foreign('id_chauffeur') 
+
+
+public function up(): void
+{
+    Schema::create('disponibilites', function (Blueprint $table) {
+        $table->id();
+        $table->date('date_debut'); 
+        $table->date('date_fin');   
+        $table->time('heure');     
+        $table->string('destination', 255); 
+        $table->enum('statut', ['active', 'desactive'])->default('active'); 
+        $table->unsignedBigInteger('id_chauffeur');
+        
+        $table->foreign('id_chauffeur') 
                 ->references('id') 
                 ->on('users') 
                 ->onDelete('cascade') 
                 ->onUpdate('cascade'); 
-            $table->timestamps(); 
-        });
-    }
-    
+            $table->timestamps();
+    });
+}
 
     /**
      * Reverse the migrations.

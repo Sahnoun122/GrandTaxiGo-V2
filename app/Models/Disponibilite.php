@@ -10,16 +10,16 @@ class Disponibilite extends Model
 {
     use HasFactory;
     // use SoftDeletes;
-    protected $table ='disponibilites';
+    protected $table = 'disponibilites';
+
     protected $fillable = [
-        'dateDebut',
-        'dateFin',
+        'date_debut', 
+        'date_fin',
+        'heure',    
         'destination',
         'statut',
         'id_chauffeur',
-        
     ];
-
     public function chauffeur()
     {
         return $this->belongsTo(User::class, 'id_chauffeur');

@@ -52,9 +52,9 @@ class TrajetController extends Controller
     {
         $trajet = Trajet::find($id);
 
-        // if (!$trajet || $trajet->id_passager != auth()->id()) {
-        //     return redirect()->route('passager.trajets')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à annuler ce trajet.');
-        // }
+        if (!$trajet || $trajet->id_passager != auth()->id()) {
+            return redirect()->route('passager.trajets')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à annuler ce trajet.');
+        }
 
         $trajet->statut = 'annule';
         $trajet->save();
@@ -71,27 +71,22 @@ class TrajetController extends Controller
                              ->with('error', 'Trajet non trouvé.');
         }
     
-        // Vérification de l'autorisation (si nécessaire)
-        // if (!$trajet->disponibilite->chauffeur->id != auth()->id()) {
-        //     return redirect()->route('chauffeur.trajet')->with('error', 'Vous n\'êtes pas autorisé à accepter ce trajet.');
-        // }
+        if (!$trajet->disponibilite->chauffeur->id != auth()->id()) {
+            return redirect()->route('chauffeur.trajet')->with('error', 'Vous n\'êtes pas autorisé à accepter ce trajet.');
+        }
     
-        // Changer le statut du trajet
         $trajet->statut = 'accepte';
         $trajet->save();
     
         try {
-            // Envoi de l'email
             Mail::to($trajet->passager->email)->send(new Email($trajet));
         } catch (\Exception $e) {
             // dd($e);
-            // Log l'erreur et renvoie un message d'échec si l'email ne peut pas être envoyé
             // \Log::error('Échec de l\'envoi de l\'email : ' . $e->getMessage());
             return redirect()->route('chauffeur.trajet')
                              ->with('error', 'Trajet accepté, mais échec de l\'envoi de l\'email.');
         }
     
-        // Retour avec un message de succès
         return redirect()->route('chauffeur.trajet')
                          ->with('success', 'Trajet accepté avec succès. Email envoyé au passager.');
     }
@@ -102,9 +97,9 @@ class TrajetController extends Controller
     {
         $trajet = Trajet::find($id);
 
-        // if (!$trajet || $trajet->disponibilite->chauffeur->id != auth()->id()) {
-        //     return redirect()->route('chauffeur.trajets')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à refuser ce trajet.');
-        // }
+        if (!$trajet || $trajet->disponibilite->chauffeur->id != auth()->id()) {
+            return redirect()->route('chauffeur.trajets')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à refuser ce trajet.');
+        }
 
         $trajet->statut = 'refuse';
         $trajet->save();

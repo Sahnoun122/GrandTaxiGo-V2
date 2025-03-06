@@ -10,7 +10,9 @@ use App\Http\Controllers\TrajetController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\PaymentsController;
 
+use App\Http\Controllers\CommentsController;
 // $_SESSION['user_id'] = 2;
+
 
 
 Route::get('/chauffeur/index', [ChauffeurController::class, 'index'])->name('chauffeur.index');
@@ -35,6 +37,13 @@ Route::get('/admin/adminds' , [AdminController::class , 'dispo'])->name('admin.a
 // // Route::POST('chauffeur.index' , [DisponibiliteController::class , 'index']);
 // // Route::POST('chauffeur.show' , [DisponibiliteController::class , 'index']);
 // // Route::POST('chauffeur.details' , [DisponibiliteController::class , 'index']);
+
+
+Route::delete('/passager/destroy/{id}', [CommentsController::class, 'destroy'])->name('passager.destroy');
+
+Route::get('/details/{id}', [PassagerController::class, 'details'])->name('passager.details');
+
+Route::post('/ajouterComment/{id}', [CommentsController::class , 'ajouterComment'])->name('passager.ajouterComment');
 
 Route::get('passager', [DisponibiliteController::class, 'index'])->name('passager.index');
 

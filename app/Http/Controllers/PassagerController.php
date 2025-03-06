@@ -29,5 +29,11 @@ class PassagerController extends Controller
         return view('passager.dashboard', compact('disponibilites'));
     }
     
+    public function details($id)
+    {
+        $disponibilite = Disponibilite::with(['chauffeur'])->findOrFail($id);
+
+        return view('passager.details', compact('disponibilite'));
+    }
     
 }

@@ -74,6 +74,7 @@
             <button id="openModalBtn" class="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500" data-id="{{ $disponibilite->id }}">
                 Réserver
             </button>
+            <a href="{{ route('passager.details', ['id' => $disponibilite->id]) }}">Voir détails</a>
         </div>
     
         <div id="reservationModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 hidden">
@@ -114,6 +115,7 @@
                         <button type="submit" class="w-full py-3 px-4 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Réserver
                         </button>
+
                     </div>
                 </form>
             </div>

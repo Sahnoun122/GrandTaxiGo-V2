@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Models\comments;
 class Disponibilite extends Model
 {
     use HasFactory;
@@ -23,5 +24,10 @@ class Disponibilite extends Model
     public function chauffeur()
     {
         return $this->belongsTo(User::class, 'id_chauffeur');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comments::class);
     }
 }

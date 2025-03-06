@@ -52,8 +52,6 @@ class AdminController extends Controller
         return view('admin.admintrj', compact('trajet'));
     }
 
-
-
     public function dispo()
     {
         $disponibilites = Disponibilite::all();

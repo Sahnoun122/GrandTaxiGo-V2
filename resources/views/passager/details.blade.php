@@ -88,6 +88,38 @@
             </form>
             
          
+
+
+        </div>
+
+
+        <div class="space-y-4">
+            @if($passager->chauffeurComments->isNotEmpty())
+                @foreach($passager->chauffeurComments as $comment)
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <div class="flex items-center mb-2">
+                            <img src="{{ asset('storage/app/public/photos' . $comment->chauffeur->photos) }}" alt="Photo du chauffeur" class="w-8 h-8 rounded-full mr-3">
+                            <div>
+                                <p class="font-semibold">{{ $comment->chauffeur->nom }} {{ $comment->chauffeur->prenom }}</p>
+                                <p class="text-sm text-gray-500">{{ $comment->created_at->format('d/m/Y H:i') }}</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700">{{ $comment->comment }}</p>
+                        <div class="flex items-center mt-2">
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= $comment->rating)
+                                    <span class="text-yellow-500">★</span> <!-- Étoile pleine -->
+                                @else
+                                    <span class="text-gray-300">★</span> <!-- Étoile vide -->
+                                @endif
+                            @endfor
+                            <span class="ml-2 text-gray-700">{{ $comment->rating }}/5</span>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <p class="text-gray-700">Aucun commentaire pour le moment.</p>
+            @endif
         </div>
     </div>
 </body>

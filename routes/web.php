@@ -9,6 +9,7 @@ use App\Http\Controllers\PassagerController;
 use App\Http\Controllers\TrajetController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\CommentRepondec;
 
 use App\Http\Controllers\CommentsController;
 // $_SESSION['user_id'] = 2;
@@ -24,6 +25,12 @@ Route::get('/admin/dashboardAdmin' , [AdminController::class , 'index'])->name('
 Route::get('/admin/admintrj' , [AdminController::class , 'trajets'])->name('admin.admintrj');
 
 Route::get('/admin/adminds' , [AdminController::class , 'dispo'])->name('admin.adminds');
+
+
+
+Route::get('/chauffeur/comments', [CommentRepondec::class, 'showw'])->name('chauffeur.comments');
+
+Route::post('/chauffeur/comments', [CommentRepondec::class, 'store'])->name('chauffeur.comments');
 
 
 // // Route::get('/admin/dashboardAdmin' , [AdminController::class , 'edit'])->name('admin.dashboardAdmin');

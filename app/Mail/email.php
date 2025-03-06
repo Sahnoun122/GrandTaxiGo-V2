@@ -24,7 +24,6 @@ class Email extends Mailable
 
     public function build()
     {
-        // Générer les données du QR Code
         $qrCodeData = json_encode([
             'id' => $this->trajet->id,
             'date' => $this->trajet->date,
@@ -33,10 +32,8 @@ class Email extends Mailable
             'passager' => $this->trajet->id_passager,
         ]);
 
-        // Générer le QR Code sous forme de chaîne de caractères en base64
         $qrCode = QrCode::size(200)->format('png')->generate($qrCodeData);
         
-        // Construction de l'email
         return $this->view('passager.accepter')
                     ->subject('Votre réservation a été acceptée')
                     ->with([

@@ -13,11 +13,7 @@ class Payments extends Model
     protected $table = 'payments';
 
     protected $fillable = [
-        'user_id', 
-        'stripe_payment_id', 
-        'amount', 
-        'currency', 
-        'status'
+        'id_passager'
     ];
 
     public function user()

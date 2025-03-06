@@ -11,6 +11,8 @@ use Stripe\Charge;
 use session;
 use Stripe\Customer;
 use Illuminate\Http\Request;
+use Iluminate\Support\Facades\Auth;
+
 
 class PaymentsController extends Controller
 {
@@ -24,25 +26,21 @@ class PaymentsController extends Controller
 public function charge(Request $request)
 {
 
-    Stripe::setApiKey(env('STRIPE_SECRET'));
+    Stripe::setApiKey(config('services.stripe.secret'));
 
     try {
        
  
         $charge = Charge::create([
-            'amount' => 5000, 
+            'amount' => 100, 
             'currency' => 'eur',
-            'email' => auth()->user()->email, 
-            'source' => $request->stripeToken,  
+            // 'email' => auth()->user()->email, 
+            'source' => $request->stripeToken,
+            'description' => 'KHADIJATON'
         ]);
-        dd($charge);
-
+        // dd($charge);
         $payment = new Payments();
-        $payment->user_id = auth()->user()->id;  
-        $payment->stripe_payment_id = $charge->id; 
-        $payment->amount = $charge->amount; 
-        $payment->currency = $charge->currency;  
-        $payment->status = $charge->status;  
+        $payment->id_passager = auth()->user()->id;
         $payment->save();
 
         return back()->with('success_message', 'Paiement réussi !');

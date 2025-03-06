@@ -17,7 +17,7 @@ class Email extends Mailable
 
     public $trajet;
 
-    public function __construct(Trajet $trajet)
+    public function __construct(Trajet $trajet) 
     {
         $this->trajet = $trajet;
     }

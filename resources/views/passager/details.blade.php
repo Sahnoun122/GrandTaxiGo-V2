@@ -93,7 +93,7 @@
         </div>
 
 
-        <div class="space-y-4">
+        {{-- <div class="space-y-4">
             @if($passager->chauffeurComments->isNotEmpty())
                 @foreach($passager->chauffeurComments as $comment)
                     <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
@@ -120,7 +120,7 @@
             @else
                 <p class="text-gray-700">Aucun commentaire pour le moment.</p>
             @endif
-        </div>
+        </div> --}}
     </div>
 </body>
 

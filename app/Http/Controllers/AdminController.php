@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Trajet;
 use App\Models\Disponibilite;
+use Illuminate\View\View;
+
 
 
 class AdminController extends Controller

@@ -47,9 +47,9 @@ class DisponibiliteController extends Controller
         }
     
         $request->validate([
-            'date_debut' => 'required|date', // Utilisez les noms de la base de données
+            'date_debut' => 'required|date', 
             'date_fin' => 'required|date',
-            'heure' => 'required|date_format:H:i', // Validation pour le champ heure (format HH:MM)
+            'heure' => 'required|date_format:H:i', 
             'destination' => 'required|string|max:255',
             'statut' => 'required|in:active,desactive',
         ]);
@@ -87,7 +87,7 @@ class DisponibiliteController extends Controller
         $validateData = $request->validate([
             'date_debut' => 'required|date',
             'date_fin' => 'required|date',
-            'heure' => 'required|date_format:H:i', // Validation pour le champ heure
+            'heure' => 'required|date_format:H:i', 
             'destination' => 'required|string|max:255',
             'statut' => 'required|in:active,desactive',
         ]);

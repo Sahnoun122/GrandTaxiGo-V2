@@ -15,7 +15,10 @@ return new class extends Migration
     Schema::create('trajets', function (Blueprint $table) {
         $table->id();
         $table->date('date');
+        
         $table->string('lieu', 255);
+        $table->string('reference')->nullable();
+
         $table->string('destination', 255);
         $table->enum('statut', ['en attente', 'accepte', 'refuse', 'annule'])->default('en attente');
         $table->unsignedBigInteger('id_passager'); 

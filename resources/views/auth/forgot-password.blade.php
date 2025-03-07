@@ -21,6 +21,5 @@
                 {{ __('Email Password Reset Link') }}
             </x-primary-button>
         </div>
-        @csrf
     </form>
 </x-guest-layout>

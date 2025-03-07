@@ -31,40 +31,21 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:passager,chauffeur,admin', // Validate against specific values
-            'photos' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-    
-        if ($request->hasFile('photos')) {
-            $path = $request->file('photos')->store('photos', 'public');
-        } else {
-            $path = null;
-        }
-    
+
         $user = User::create([
-            'nom' => $request->nom,
-            'prenom' => $request->prenom,
+            'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'Role' => $request->role,
-            'photos' => $path,
+            'password' => Hash::make($request->password),
         ]);
-    
+
         event(new Registered($user));
-    
+
         Auth::login($user);
-    
-        if ($user->Role === 'chauffeur') {
-            return redirect()->route('chauffeur.index');
-        } elseif ($user->Role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        } else {
-            return redirect()->route('passager.dashboard');
-        }
+
+        return redirect(RouteServiceProvider::HOME);
     }
 }
-

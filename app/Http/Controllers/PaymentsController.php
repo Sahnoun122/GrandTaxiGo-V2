@@ -9,7 +9,6 @@ use App\Http\Requests\UpdatepaymentsRequest;
 use Stripe\Stripe;
 use Stripe\Charge;
 use session;
-use Stripe\Customer;
 use Illuminate\Http\Request;
 use Iluminate\Support\Facades\Auth;
 

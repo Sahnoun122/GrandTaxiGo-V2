@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Disponibilite;
+use Illuminate\View\View;
 
 
 class PassagerController extends Controller

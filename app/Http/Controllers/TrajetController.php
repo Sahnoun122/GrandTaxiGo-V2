@@ -7,6 +7,15 @@ use App\Models\Disponibilite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Email;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
+use App\Notifications\TrajetAccepte;
+
 class TrajetController extends Controller
 {
     // public function __construct(){
@@ -52,9 +61,9 @@ class TrajetController extends Controller
     {
         $trajet = Trajet::find($id);
 
-        if (!$trajet || $trajet->id_passager != auth()->id()) {
-            return redirect()->route('passager.trajets')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à annuler ce trajet.');
-        }
+        // if (!$trajet || $trajet->id_passager != auth()->id()) {
+        //     return redirect()->route('passager.trajets')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à annuler ce trajet.');
+        // }
 
         $trajet->statut = 'annule';
         $trajet->save();
@@ -62,44 +71,45 @@ class TrajetController extends Controller
         return redirect()->route('passager.trajets')->with('success', 'Trajet annulé avec succès.');
     }
 
+   
+    
+
     public function accept($id)
     {
         $trajet = Trajet::find($id);
     
-        if (!$trajet) {
-            return redirect()->route('chauffeur.trajet')
-                             ->with('error', 'Trajet non trouvé.');
-        }
-    
-        if (!$trajet->disponibilite->chauffeur->id != auth()->id()) {
-            return redirect()->route('chauffeur.trajet')->with('error', 'Vous n\'êtes pas autorisé à accepter ce trajet.');
-        }
-    
+        // Mise à jour du statut du trajet
         $trajet->statut = 'accepte';
         $trajet->save();
     
-        try {
-            Mail::to($trajet->passager->email)->send(new Email($trajet));
-        } catch (\Exception $e) {
-            // dd($e);
-            // \Log::error('Échec de l\'envoi de l\'email : ' . $e->getMessage());
-            return redirect()->route('chauffeur.trajet')
-                             ->with('error', 'Trajet accepté, mais échec de l\'envoi de l\'email.');
-        }
+        $qrCodeData = json_encode([
+            'reference' => $trajet->reference,
+            'date' => $trajet->date,
+            'heure' => $trajet->heure,
+            'depart' => $trajet->depart,
+            'destination' => $trajet->destination,
+        ]);
     
-        return redirect()->route('chauffeur.trajet')
-                         ->with('success', 'Trajet accepté avec succès. Email envoyé au passager.');
+        $qrCode = new QrCode($qrCodeData);
+        $qrCode->setSize(200);
+        $writer = new PngWriter();
+        $qrCodeImage = $writer->write($qrCode)->getString();
+        $qrCodeBase64 = base64_encode($qrCodeImage);
+    
+        $passager = $trajet->passager;
+        $passager->notify(new TrajetAccepte($trajet, $qrCodeBase64));
+    
+        return redirect()->route('chauffeur.trajet')->with('success', 'Trajet accepté avec succès.');
     }
     
-
 
     public function refuse($id)
     {
         $trajet = Trajet::find($id);
 
-        if (!$trajet || $trajet->disponibilite->chauffeur->id != auth()->id()) {
-            return redirect()->route('chauffeur.trajets')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à refuser ce trajet.');
-        }
+        // if (!$trajet || $trajet->disponibilite->chauffeur->id != auth()->id()) {
+        //     return redirect()->route('chauffeur.trajets')->with('error', 'Trajet non trouvé ou vous n\'êtes pas autorisé à refuser ce trajet.');
+        // }
 
         $trajet->statut = 'refuse';
         $trajet->save();

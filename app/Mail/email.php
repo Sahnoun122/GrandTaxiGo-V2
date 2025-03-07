@@ -16,33 +16,28 @@ class Email extends Mailable
     use Queueable, SerializesModels;
 
     public $trajet;
+    public $qrCodeBase64;
 
-    public function __construct(Trajet $trajet) 
-    {
-        $this->trajet = $trajet;
-    }
-
-    public function build()
-    {
-        $qrCodeData = json_encode([
-            'id' => $this->trajet->id,
-            'date' => $this->trajet->date,
-            'lieu' => $this->trajet->lieu,
-            'destination' => $this->trajet->destination,
-            'passager' => $this->trajet->id_passager,
-        ]);
-
-        $qrCode = QrCode::size(200)->format('png')->generate($qrCodeData);
-        
-        return $this->view('passager.accepter')
-                    ->subject('Votre réservation a été acceptée')
-                    ->with([
-                        'trajet' => $this->trajet,
-                    ])
-                    ->attachData($qrCode, 'qr_code.png', [
-                        'mime' => 'image/png',
-                    ]);
-    }
+    
+        public function __construct($details) 
+        {
+            $this->trajet = $details['trajet'];
+            $this->qrCodeBase64 = $details['qrCode'];
+        }
+    
+        public function build()
+        {
+            return $this->view('passager.accepter')
+                        ->subject('Votre réservation a été acceptée')
+                        ->with([
+                            'trajet' => $this->trajet,
+                        ])
+                        ->attachData(base64_decode($this->qrCodeBase64), 'qr_code.png', [
+                            'mime' => 'image/png',
+                        ]);
+        }
+    
+    
 
     /**
      * Get the message envelope.

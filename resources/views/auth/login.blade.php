@@ -42,9 +42,6 @@
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
             </x-primary-button>
-            <a href="/auth/facebook">facebook</a>
-            <a href="/auth/google">google</a>
         </div>
-        @csrf
     </form>
 </x-guest-layout>

@@ -97,7 +97,7 @@ class TrajetController extends Controller
         $qrCodeBase64 = base64_encode($qrCodeImage);
     
         $passager = $trajet->passager;
-        $passager->notify(new TrajetAccepte($trajet, $qrCodeBase64));
+        // $passager->notify(new TrajetAccepte($trajet, $qrCodeBase64));
     
         return redirect()->route('chauffeur.trajet')->with('success', 'Trajet accepté avec succès.');
     }

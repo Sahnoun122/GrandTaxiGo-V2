@@ -13,14 +13,14 @@
             <h1 class="text-2xl font-bold mb-4">Détails du Trajet</h1>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <p class="text-gray-700"><strong>Chauffeur:</strong> {{ $disponibilite->chauffeur->nom }} {{ $disponibilite->chauffeur->prenom }}</p>
+                    {{-- <p class="text-gray-700"><strong>Chauffeur:</strong> {{ $disponibilite->chauffeur->nom }} {{ $disponibilite->chauffeur->prenom }}</p> --}}
                     <p class="text-gray-700"><strong>Destination:</strong> {{ $disponibilite->destination }}</p>
                     <p class="text-gray-700"><strong>Date de début:</strong> {{ $disponibilite->dateDebut }}</p>
                     <p class="text-gray-700"><strong>Date de fin:</strong> {{ $disponibilite->dateFin }}</p>
                     <p class="text-gray-700"><strong>Statut:</strong> {{ $disponibilite->statut }}</p>
                 </div>
                 <div class="flex justify-center">
-                    <img src="{{ asset('storage/app/public/photos' . $disponibilite->chauffeur->photos) }}" alt="Photo du chauffeur" class="rounded-full w-32 h-32 object-cover">
+                    {{-- <img src="{{ asset('storage/app/public/photos' . $disponibilite->chauffeur->photos) }}" alt="Photo du chauffeur" class="rounded-full w-32 h-32 object-cover"> --}}
                 </div>
             </div>
 
@@ -31,7 +31,7 @@
                     @foreach($disponibilite->comments as $comment)
                         <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
                             <div class="flex items-center mb-2">
-                                <img src="{{ asset('storage/app/public/photos' . $comment->user->photo) }}" alt="Photo de l'utilisateur" class="w-8 h-8 rounded-full mr-3">
+                                {{-- <img src="{{ asset('storage/app/public/photos' . $comment->user->photo) }}" alt="Photo de l'utilisateur" class="w-8 h-8 rounded-full mr-3"> --}}
                                 <div>
                                     <p class="font-semibold">{{ $comment->user->name }}</p>
                                     <p class="text-sm text-gray-500">{{ $comment->created_at->format('d/m/Y H:i') }}</p>

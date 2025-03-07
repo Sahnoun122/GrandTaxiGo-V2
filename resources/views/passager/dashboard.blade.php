@@ -62,8 +62,8 @@
         @endphp --}}
         @foreach($disponibilites as $disponibilite)
         <div class="reservation bg-white shadow-lg rounded-lg p-6 my-4 max-w-xl mx-auto">
-            <h3 class="text-xl font-semibold text-gray-800">{{ $disponibilite->chauffeur->nom }} {{ $disponibilite->chauffeur->prenom }}</h3>
-            <img src="{{ asset('storage/app/public/photos' . $disponibilite->chauffeur->photos) }}" alt="Photo du chauffeur" class="rounded-full w-24 h-24 object-cover my-4">
+            {{-- <h3 class="text-xl font-semibold text-gray-800">{{ $disponibilite->chauffeur->nom }} {{ $disponibilite->chauffeur->prenom }}</h3> --}}
+            {{-- <img src="{{ asset('storage/app/public/photos' . $disponibilite->chauffeur->photos) }}" alt="Photo du chauffeur" class="rounded-full w-24 h-24 object-cover my-4"> --}}
             
             <p class="text-gray-700"><strong>Destination:</strong> {{ $disponibilite->destination }}</p>
             <p class="text-gray-700"><strong>Date de début:</strong> {{ $disponibilite->dateDebut }}</p>

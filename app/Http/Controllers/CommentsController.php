@@ -25,7 +25,7 @@ class CommentsController extends Controller
     $comment->user_id = auth()->id();
     $comment->comment = $request->comment;
     $comment->rating = $request->rating;
-    $comment->save();
+    // $comment->save();
 
     return redirect()->back()->with('success', 'Commentaire ajouté avec succès !');
 }

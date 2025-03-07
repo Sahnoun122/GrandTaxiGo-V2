@@ -7,6 +7,7 @@ use App\Models\Disponibilite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Email;
+use App\Models\User;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Bus\Queueable;
@@ -14,7 +15,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
-use App\Notifications\TrajetAccepte;
+use App\Notifications\acceptedBooking;
 
 class TrajetController extends Controller
 {
@@ -96,9 +97,9 @@ class TrajetController extends Controller
         $qrCodeImage = $writer->write($qrCode)->getString();
         $qrCodeBase64 = base64_encode($qrCodeImage);
     
-        $passager = $trajet->passager;
-        // $passager->notify(new TrajetAccepte($trajet, $qrCodeBase64));
-    
+        $passager = User::has($trajet);
+         dd($passager);
+        $trajet->notify(new acceptedBooking($trajet, $qrCodeBase64));
         return redirect()->route('chauffeur.trajet')->with('success', 'Trajet accepté avec succès.');
     }
     

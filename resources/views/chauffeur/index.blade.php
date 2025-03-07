@@ -75,7 +75,7 @@
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Heure : {{ $dispo->heure }}</p> 
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Destination : {{ $dispo->destination  }}</p>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Statut : {{ $dispo->statut }}</p>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Chauffeur : {{ $dispo->chauffeur->nom }}</p>
+                {{-- <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Chauffeur : {{ $dispo->chauffeur->nom }}</p> --}}
     
                 <div class="flex space-x-2">
                     <a href="{{ route('chauffeur.edit', $dispo->id) }}" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Modifier</a>
